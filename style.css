@@ -1,0 +1,274 @@
+/* Body styling */
+body {
+  font-family: 'Segoe UI', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+  background: linear-gradient(135deg, #1e3a8a, #bfcbe7);
+}
+header {
+    position: absolute;      
+    top: 30px;               
+    left: 50%;               
+    transform: translateX(-50%);
+    color: white;
+     font-size: calc(16px + 1vw); /* स्क्रीन के हिसाब से टेक्स्ट बढ़े/घटे */
+    white-space: nowrap;
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+    background: #4CAF50;     
+    padding: 15px 30px;      
+    border-radius: 10px;     
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3); 
+    margin: 0;
+    white-space: nowrap; /* यह लाइन टेक्स्ट को एक ही लाइन में रखेगी */
+}
+
+/* Card styling */
+.card {
+  width: 400px;
+  max-width: 75%;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 35px 30px;
+  border-radius: 20px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+  text-align: center;
+  position: relative;
+  backdrop-filter: blur(15px);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 25px 60px rgba(0,0,0,0.25);
+}
+
+/* Logo / image circle */
+.circle-img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 20px auto;
+  border: 3px solid #2563eb;
+  cursor: pointer;
+  transition: transform 0.3s, border-color 0.3s;
+}
+
+.circle-img:hover {
+  transform: scale(1.05);
+  border-color: #1e40af;
+}
+
+/* Headings & text */
+h2 {
+  color: #1e3a8a;      /* Darker blue */
+  font-weight: 700;
+}
+
+.muted {
+  color: #1f2937;      /* Dark gray, better readability */
+  font-size: 14px;
+}
+
+pre {
+  background: rgba(255, 255, 255, 0.8); /* Slightly solid for contrast */
+  color: #111;                          /* Dark text */
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.popup {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.6); /* सिर्फ dark overlay */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Blur सिर्फ content box पर */
+.popup-content {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  padding: 30px 40px;
+  text-align: center;
+  color: #fff;
+  backdrop-filter: blur(10px); /* सिर्फ box blur */
+  box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+  animation: scaleUp 0.3s ease-in-out;
+}
+
+
+.popup-content h3 {
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+  color: #fff;
+  letter-spacing: 0.5px;
+}
+
+.popup-content p {
+  font-size: 1rem;
+  color: #e0e0e0;
+  margin-bottom: 20px;
+}
+
+#btnCloseReminder {
+  background: linear-gradient(90deg, #00c6ff, #0072ff);
+  border: none;
+  color: #fff;
+  font-size: 1rem;
+  padding: 10px 25px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#btnCloseReminder:hover {
+  transform: scale(1.05);
+  background: linear-gradient(90deg, #0072ff, #00c6ff);
+  box-shadow: 0 0 10px rgba(0, 114, 255, 0.6);
+}
+/* popup hidden class */
+.hidden { display: none; }
+
+.hidden {
+  display: none;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleUp {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+/* Key copy animation */
+.copy-animation {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.copy-animation.show {
+  opacity: 1;
+  transform: translate(-50%, -60%);
+}
+
+/* Small text */
+.small { font-size: 0.9rem; }
+#keyBox { padding: 8px 12px; border-radius: 6px; background:#f3f4f6; }
+#btnCopy[disabled] { opacity: 0.5; cursor: not-allowed; }
+
+
+
+/* Buttons */
+button {
+  padding: 12px 20px;
+  border-radius: 12px;
+  border: none;
+  background: #2563eb;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 15px;
+  transition: all 0.25s ease-in-out;
+}
+
+button:hover {
+  background: #1e40af;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+/* Copy / admin buttons */
+#btnCopy, #btnAddKey {
+  background: #059669;
+}
+
+#btnCopy:hover, #btnAddKey:hover {
+  background: #047857;
+}
+
+/* Admin login button */
+#btnAdminLogin {
+  background: #6b21a8;
+}
+
+#btnAdminLogin:hover {
+  background: #581c87;
+}
+
+/* Small text */
+.small {
+  font-size: 13px;
+  color: #6b7280;
+  margin-top: 8px;
+}
+
+/* Hidden elements */
+.hidden { display: none; }
+
+/* Key box */
+pre {
+  background: rgba(243, 244, 246, 0.6);
+  padding: 14px;
+  border-radius: 10px;
+  border: 1px dashed #cbd5e1;
+  word-break: break-word;
+  margin-top: 10px;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+/* Input fields */
+input {
+  width: 80%;
+  padding: 10px;
+  margin: 6px 0;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  font-size: 14px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 8px rgba(37, 99, 235, 0.4);
+}
+
+/* Admin panel */
+#admin-panel {
+  margin-top: 20px;
+  border-top: 1px solid rgba(229, 231, 235, 0.7);
+  padding-top: 15px;
+  display: none;
+}
+
+/* Responsive tweaks */
+@media (max-width: 480px) {
+  .card {
+    padding: 25px 15px;
+    width: 95%;
+  }
+  h2 { font-size: 20px; }
+  .muted { font-size: 13px; }
+  pre { font-size: 14px; padding: 10px; }
+  button { font-size: 14px; padding: 10px 16px; }
+}
+

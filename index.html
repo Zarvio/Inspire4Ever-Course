@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Show → Join TG → Key</title>
+<style>
+body {
+  font-family: 'Segoe UI', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+  background: #000;
+  overflow: hidden;
+}
+header {
+  position: absolute;
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+   font-family: 'Arial', sans-serif;
+  color: #00ff88;
+  font-size: calc(16px + 1vw);
+  background: rgba(0,0,0,0.6);
+  padding: 10px 25px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #00ff88;
+  z-index: 10;
+   text-align: center;
+   padding: 15px 30px; 
+    margin: 0;
+    white-space: nowrap; /* यह लाइन टेक्स्ट को एक ही लाइन में रखेगी */
+}
+
+.card {
+  width: 380px;
+  max-width: 80%;
+  background: rgba(0, 0, 0, 0.65);
+  padding: 35px 30px;
+  border-radius: 20px;
+  text-align: center;
+  color: #fff;
+  backdrop-filter: blur(10px);
+  border: 1px solid #00ff88;
+  box-shadow: 0 0 25px rgba(0,255,136,0.3);
+  position: relative;
+  z-index: 10;
+}
+.circle-img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #00ff88;
+  margin-bottom: 15px;
+  cursor: pointer;
+}
+button {
+  padding: 12px 20px;
+  border-radius: 10px;
+  border: none;
+  background: #00ff88;
+  color: #000;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.3s;
+}
+button:hover { transform: scale(1.05); background: #00cc66; }
+.hidden { display: none; }
+pre {
+  background: rgba(255,255,255,0.1);
+  color: #00ff88;
+  padding: 10px;
+  border-radius: 8px;
+  font-weight: 600;
+}
+.copy-animation {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2rem; opacity: 0; transition: all 0.3s ease;
+}
+.copy-animation.show { opacity: 1; transform: translate(-50%, -60%); }
+#matrix {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  z-index: 0;
+  background: #000;
+}
+</style>
+</head>
+<body>
+
+<canvas id="matrix"></canvas>
+
+<header>Welcome to Feature Mod Keys</header>
+
+<div class="card">
+  <img src="tg.jpg" class="circle-img" alt="Logo">
+  <h2>Get Your Key</h2>
+  <p>Process: Show → Join Telegram → Key</p>
+
+  <div id="step-show">
+    <button id="btnShow">Show Key</button>
+  </div>
+  <div id="step-join" class="hidden">
+    <button id="btnJoin">Join Telegram</button>
+  </div>
+
+  <div id="step-key" class="hidden">
+    <h3>Your Key:</h3>
+    <div style="display:flex;gap:8px;align-items:center;justify-content:center;">
+      <pre id="keyBox">—</pre>
+      <button id="btnCopy">Copy</button>
+    </div>
+    <div id="keyTimer" style="margin-top:8px;color:#00b0ff;">Time left: <span id="timeLeft">--:--:--</span></div>
+    <div id="expiredMsg" style="margin-top:8px;color:#dc2626; display:none;">Sorry Trial Key expired Purchase Vip Mod</div>
+    <div id="copyAnimation" class="copy-animation"></div>
+  </div>
+
+  <div id="admin-panel" style="display:none;margin-top:20px;">
+    <button id="btnAdminLogin">Admin Login</button>
+    <div id="adminPassSection" class="hidden" style="margin-top:10px;">
+      <input id="adminPassInput" type="password" placeholder="Enter Admin Password">
+      <button id="btnSubmitPass">Submit</button>
+      <p id="adminMsg" class="error"></p>
+    </div>
+    <div id="adminKeySection" class="hidden" style="margin-top:10px;">
+      <input id="adminKeyInput" type="text" placeholder="Add Key for users">
+      <input id="adminExpiryInput" type="number" placeholder="Expiry time (hours)">
+      <button id="btnAddKey">Add Key</button>
+      <p id="adminKeyMsg" class="small" style="color:#16a34a;"></p>
+    </div>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyDUefeJbHKIAs-l3zvFlGaas6VD63vv4kI",
+  authDomain: "inspire4ever-c60ad.firebaseapp.com",
+  databaseURL: "https://inspire4ever-c60ad-default-rtdb.firebaseio.com",
+  projectId: "inspire4ever-c60ad",
+  storageBucket: "inspire4ever-c60ad.appspot.com",
+  messagingSenderId: "125014633127",
+  appId: "1:125014633127:web:d29e4c37628ab637f40982"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+const TELEGRAM_INVITE = 'https://t.me/+eT13u4rIiBwwY2U9';
+const btnShow = document.getElementById('btnShow');
+const stepShow = document.getElementById('step-show');
+const stepJoin = document.getElementById('step-join');
+const stepKey = document.getElementById('step-key');
+const btnJoin = document.getElementById('btnJoin');
+const keyBox = document.getElementById('keyBox');
+const btnCopy = document.getElementById('btnCopy');
+const timeLeftEl = document.getElementById('timeLeft');
+const keyTimerEl = document.getElementById('keyTimer');
+const expiredMsgEl = document.getElementById('expiredMsg');
+
+const adminPanel = document.getElementById('admin-panel');
+const btnAdminLogin = document.getElementById('btnAdminLogin');
+const adminPassSection = document.getElementById('adminPassSection');
+const adminPassInput = document.getElementById('adminPassInput');
+const btnSubmitPass = document.getElementById('btnSubmitPass');
+const adminMsg = document.getElementById('adminMsg');
+const adminKeySection = document.getElementById('adminKeySection');
+const adminKeyInput = document.getElementById('adminKeyInput');
+const adminExpiryInput = document.getElementById('adminExpiryInput');
+const btnAddKey = document.getElementById('btnAddKey');
+const DEMO_ADMIN_PASSWORD = 'feature@4.0';
+
+let tgWindow = null, revealed = false, countdownInterval = null;
+
+btnShow.onclick = () => {
+  stepShow.classList.add('hidden');
+  stepJoin.classList.remove('hidden');
+};
+btnJoin.onclick = () => {
+  tgWindow = window.open(TELEGRAM_INVITE, '_blank');
+  setTimeout(() => reveal(), 5000);
+};
+function reveal() {
+  if (revealed) return;
+  revealed = true;
+  stepJoin.classList.add('hidden');
+  stepKey.classList.remove('hidden');
+}
+
+btnCopy.onclick = async () => {
+  const text = keyBox.textContent.trim();
+  if (!text || text === '—') return;
+  await navigator.clipboard.writeText(text);
+};
+
+function formatTime(ms) {
+  if (ms <= 0) return "00:00:00";
+  const s = Math.floor(ms / 1000),
+        h = Math.floor(s / 3600),
+        m = Math.floor((s % 3600) / 60),
+        sc = s % 60;
+  return `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${sc.toString().padStart(2,'0')}`;
+}
+function disableKeyUI() {
+  keyBox.textContent = '—';
+  btnCopy.disabled = true;
+  keyTimerEl.style.display = 'none';
+  expiredMsgEl.style.display = 'block';
+}
+function enableKeyUI(k) {
+  keyBox.textContent = k;
+  btnCopy.disabled = false;
+  keyTimerEl.style.display = 'block';
+  expiredMsgEl.style.display = 'none';
+}
+function startCountdown(e) {
+  clearInterval(countdownInterval);
+  if (!e) { timeLeftEl.textContent = 'Unlimited'; return; }
+  function t() {
+    const r = e - Date.now();
+    if (r <= 0) { clearInterval(countdownInterval); disableKeyUI(); return; }
+    timeLeftEl.textContent = formatTime(r);
+  }
+  t();
+  countdownInterval = setInterval(t, 1000);
+}
+
+db.ref('keys/latest').on('value', s => {
+  const d = s.val();
+  if (!d || !d.value) { disableKeyUI(); return; }
+  enableKeyUI(d.value);
+  startCountdown(d.expiresAt || null);
+});
+
+adminPanel.style.display = 'none';
+let taps=0, tapTimer;
+document.querySelector('.circle-img').addEventListener('click', () => {
+  taps++;
+  clearTimeout(tapTimer);
+  tapTimer = setTimeout(()=> taps=0, 1000);
+  if(taps>=5){ adminPanel.style.display='block'; taps=0; }
+});
+btnAdminLogin.onclick = ()=> { adminPassSection.classList.remove('hidden'); adminMsg.textContent=''; };
+btnSubmitPass.onclick = ()=>{
+  if(adminPassInput.value.trim()===DEMO_ADMIN_PASSWORD){
+    adminKeySection.classList.remove('hidden');
+    adminMsg.textContent='Logged in!'; adminMsg.style.color='#16a34a';
+    adminPassSection.classList.add('hidden');
+  } else { adminMsg.textContent='Incorrect password!'; adminMsg.style.color='#dc2626'; }
+};
+btnAddKey.onclick = ()=>{
+  const k = adminKeyInput.value.trim();
+  if(!k) return;
+  const h = +adminExpiryInput.value;
+  let e=null;
+  if(!isNaN(h)&&h>0) e=Date.now()+h*60*60*1000;
+  const p={value:k};
+  if(e) p.expiresAt=e;
+  db.ref('keys/latest').set(p).then(()=>{
+    adminKeyMsg.textContent='Key added!';
+    adminKeyInput.value=''; adminExpiryInput.value='';
+  });
+};
+
+(function(){
+  const canvas=document.getElementById('matrix'); const ctx=canvas.getContext('2d');
+  canvas.width=window.innerWidth; canvas.height=window.innerHeight;
+  const letters='Feature Mod '; const fontSize=16; const columns=Math.floor(canvas.width/fontSize);
+  const drops=Array(columns).fill(1);
+  function draw(){
+    ctx.fillStyle='rgba(0,0,0,0.1)'; ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle='#00ff88'; ctx.font=fontSize+'px monospace';
+    for(let i=0;i<drops.length;i++){
+      const text=letters.charAt(Math.floor(Math.random()*letters.length));
+      ctx.fillText(text,i*fontSize,drops[i]*fontSize);
+      if(drops[i]*fontSize>canvas.height && Math.random()>0.975) drops[i]=0;
+      drops[i]++;
+    }
+  }
+  setInterval(draw,33);
+})();
+</script>
+
+</body>
+</html>
