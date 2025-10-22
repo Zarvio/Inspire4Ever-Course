@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Music Player</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #a8edea, #fed6e3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 10px;
+    }
+
+    h1 {
+      margin-bottom: 30px;
+      color: #333;
+    }
+
+    .player {
+      background: #fff;
+      padding: 20px 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      text-align: center;
+      width: 300px;
+      margin-bottom: 25px;
+      transition: 0.3s;
+    }
+
+    .player:hover {
+      transform: scale(1.03);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+    }
+
+    h2 {
+      margin-bottom: 15px;
+      font-size: 18px;
+      color: #444;
+    }
+
+    audio {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+
+    a.download-btn {
+      display: inline-block;
+      padding: 8px 16px;
+      background: #007bff;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    a.download-btn:hover {
+      background: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎶 Music Collection 🎶</h1>
+  <div id="musicContainer"></div>
+
+  <script>
+    // 👇 Yahan apne gaane add karo
+    const songs = [
+      { name: "Intro Background Music", file: "Intro bg.mp3" },
+      { name: "Second BG", file: "Second BG.mp3" },
+      { name: "LoFi Beats", file: "lofi.mp3" },
+      { name: "Party Vibes", file: "party.mp3" }
+    ];
+
+    const container = document.getElementById('musicContainer');
+
+    songs.forEach(song => {
+      const div = document.createElement('div');
+      div.className = 'player';
+      div.innerHTML = `
+        <h2>${song.name}</h2>
+        <audio controls>
+          <source src="${song.file}" type="audio/mpeg">
+          Your browser does not support the audio element.
+        </audio>
+        <br>
+        <a href="${song.file}" download class="download-btn">Download</a>
+      `;
+      container.appendChild(div);
+    });
+  </script>
+</body>
+</html>

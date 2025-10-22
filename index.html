@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inspire4Ever</title>
+<style>
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #a8edea, #fed6e3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 50px 20px;
+  }
+
+  h1 {
+    color: #333;
+    margin-bottom: 40px;
+  }
+
+  .boxes {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .box {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    text-align: center;
+    width: 250px;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+
+  .box:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+  }
+
+  /* Popup Styles */
+  .popup {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .popup-content {
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+  }
+
+  .popup-content input {
+    padding: 10px;
+    width: 80%;
+    margin: 15px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+  }
+
+  .popup-content button {
+    padding: 10px 20px;
+    background: #ff4b2b;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s;
+  }
+
+  .popup-content button:hover {
+    background: #ff416c;
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 10px; right: 15px;
+    font-size: 20px;
+    cursor: pointer;
+    color: #333;
+  }
+
+  .success-msg {
+    color: green;
+    font-weight: bold;
+    margin-top: 15px;
+  }
+
+  .error-msg {
+    color: red;
+    font-weight: bold;
+    margin-top: 15px;
+  }
+
+  /* Footer Box Style */
+  footer {
+    background: white;
+    padding: 20px 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    text-align: center;
+    margin-top: 50px;
+    color: #555;
+    font-size: 14px;
+    max-width: 600px;
+    width: 90%;
+    line-height: 1.5;
+  }
+.circle-img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #00ff88;
+  margin-bottom: 15px;
+  cursor: pointer;
+}
+  footer a {
+    color: #ff4b2b;
+    text-decoration: none;
+  }
+
+  footer a:hover {
+    text-decoration: underline;
+  }
+</style>
+
+</head>
+<body>
+<img src="logo.jpg" class="circle-img" alt="Logo">
+<h1>Inspire4Ever Course</h1>
+
+<div class="boxes">
+  <div class="box" data-key="personal123">Personal Details</div>
+  <div class="box" data-key="Inspire4Ever$vRcyK">Tutorial</div>
+  <div class="box" data-key="third123">Third Section</div>
+</div>
+
+<div class="popup" id="popup">
+  <div class="popup-content">
+    <span class="close-btn" id="closeBtn">&times;</span>
+    <h2>Enter Key</h2>
+    <input type="password" id="keyInput" placeholder="Enter your key">
+    <br>
+    <button id="submitBtn">Submit</button>
+    <div id="msg"></div>
+  </div>
+</div>
+<footer style="margin-top: 50px; text-align: center; color: #555; font-size: 14px; line-height: 1.5;">
+  &copy; 2025 Inspire4Ever — Built with ❤️ & Neon<br>
+  Made responsive for phones. If images don't show, put the image files in the same folder as this HTML.
+</footer>
+
+<script>
+const boxes = document.querySelectorAll('.box');
+const popup = document.getElementById('popup');
+const closeBtn = document.getElementById('closeBtn');
+const submitBtn = document.getElementById('submitBtn');
+const keyInput = document.getElementById('keyInput');
+const msg = document.getElementById('msg');
+
+let currentKey = "";
+let redirectPage = "";
+
+boxes.forEach(box => {
+  box.addEventListener('click', () => {
+    currentKey = box.getAttribute('data-key');
+
+    // Set corresponding redirect page
+    if(currentKey === "personal123") redirectPage = "personal.html";
+    else if(currentKey === "Inspire4Ever$vRcyK") redirectPage = "tutorial.html";
+    else if(currentKey === "third123") redirectPage = "third.html";
+
+    keyInput.value = "";
+    msg.innerHTML = "";
+    popup.style.display = "flex";
+  });
+});
+
+closeBtn.addEventListener('click', () => {
+  popup.style.display = "none";
+});
+
+submitBtn.addEventListener('click', () => {
+  if(keyInput.value === currentKey){
+    msg.innerHTML = "<span class='success-msg'>Access Granted!</span>";
+    setTimeout(()=> { 
+      popup.style.display = "none"; 
+      window.location.href = redirectPage; // Redirect to the specific page
+    }, 800);
+  } else {
+    msg.innerHTML = "<span class='error-msg'>Incorrect Key! Try Again.</span>";
+  }
+});
+
+window.addEventListener('click', (e) => {
+  if(e.target === popup){
+    popup.style.display = "none";
+  }
+});
+</script>
+
+
+</body>
+</html> 
