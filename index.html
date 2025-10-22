@@ -5,123 +5,66 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Inspire4Ever</title>
 <style>
-  body {
-    font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg, #a8edea, #fed6e3);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 50px 20px;
-  }
+/* Base Styles */
+* { box-sizing: border-box; }
 
-  h1 {
-    color: #333;
-    margin-bottom: 40px;
-  }
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #a8edea, #fed6e3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 50px 20px;
+  margin: 0;
+  overflow-x: hidden;
+}
 
-  .boxes {
-    display: flex;
-    gap: 30px;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
+h1 { color: #333; margin-bottom: 40px; text-align: center; }
 
-  .box {
-    background: white;
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-    text-align: center;
-    width: 250px;
-    cursor: pointer;
-    transition: transform 0.3s, box-shadow 0.3s;
-  }
+/* Boxes Container */
+.boxes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 25px;
+}
 
-  .box:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 15px 30px rgba(0,0,0,0.3);
-  }
+/* Each Box */
+.box {
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  padding: 25px 20px;
+  width: 260px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
 
-  /* Popup Styles */
-  .popup {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0,0,0,0.7);
-    display: none;
-    justify-content: center;
-    align-items: center;
-  }
+.box:hover { transform: translateY(-8px); box-shadow: 0 12px 25px rgba(0,0,0,0.25); }
 
-  .popup-content {
-    background: #fff;
-    padding: 30px;
-    border-radius: 10px;
-    width: 90%;
-    max-width: 400px;
-    text-align: center;
-    position: relative;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-  }
+/* Section Title */
+.section-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 12px 0;
+}
 
-  .popup-content input {
-    padding: 10px;
-    width: 80%;
-    margin: 15px 0;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    font-size: 16px;
-  }
+/* Learner Count */
+.used-count {
+  font-size: 12px;
+  color: #777;
+  margin-top: 8px;
+  opacity: 0.8;
+  transition: color 0.3s, opacity 0.3s;
+}
 
-  .popup-content button {
-    padding: 10px 20px;
-    background: #ff4b2b;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background 0.3s;
-  }
+.box:hover .used-count { color: #ff4b2b; opacity: 1; }
 
-  .popup-content button:hover {
-    background: #ff416c;
-  }
-
-  .close-btn {
-    position: absolute;
-    top: 10px; right: 15px;
-    font-size: 20px;
-    cursor: pointer;
-    color: #333;
-  }
-
-  .success-msg {
-    color: green;
-    font-weight: bold;
-    margin-top: 15px;
-  }
-
-  .error-msg {
-    color: red;
-    font-weight: bold;
-    margin-top: 15px;
-  }
-
-  /* Footer Box Style */
-  footer {
-    background: white;
-    padding: 20px 30px;
-    border-radius: 15px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-    text-align: center;
-    margin-top: 50px;
-    color: #555;
-    font-size: 14px;
-    max-width: 600px;
-    width: 90%;
-    line-height: 1.5;
-  }
+/* Circle Image */
 .circle-img {
   width: 100px;
   height: 100px;
@@ -130,26 +73,109 @@
   border: 3px solid #00ff88;
   margin-bottom: 15px;
   cursor: pointer;
+  animation: logoGlow 2s ease-in-out, fadeIn 1.5s ease;
 }
-  footer a {
-    color: #ff4b2b;
-    text-decoration: none;
-  }
 
-  footer a:hover {
-    text-decoration: underline;
-  }
+@keyframes logoGlow {
+  0%,100%{ box-shadow:0 0 10px #00ff88,0 0 20px #00ff88;}
+  50%{ box-shadow:0 0 25px #00ffaa,0 0 40px #00ffaa;}
+}
+@keyframes fadeIn { from { opacity:0; transform:scale(0.7); } to { opacity:1; transform:scale(1); } }
+
+/* Popup */
+.popup {
+  position: fixed; top:0; left:0;
+  width:100%; height:100%;
+  background: rgba(0,0,0,0.7);
+  display: none;
+  justify-content:center; align-items:center;
+  z-index:1000; padding:15px; overflow-y:auto;
+}
+
+.popup-content {
+  background:#fff;
+  padding:25px;
+  border-radius:10px;
+  width:100%; max-width:400px;
+  text-align:center;
+  position:relative;
+  box-shadow:0 8px 25px rgba(0,0,0,0.3);
+  animation: popupFade 0.4s ease;
+}
+
+@keyframes popupFade { from { transform: scale(0.8); opacity:0; } to { transform: scale(1); opacity:1; } }
+
+.popup-content input {
+  padding:12px; width:100%; margin:12px 0; border-radius:8px;
+  border:1px solid #c396a7; font-size:16px;
+}
+
+.popup-content input:focus { border-color:#ff4b2b; outline:none; }
+
+.popup-content button {
+  display:block; width:100%; padding:12px;
+  background: linear-gradient(45deg, #ff4b2b, #ff416c);
+  color:white; border:none; border-radius:8px;
+  cursor:pointer; font-weight:bold; margin-top:10px;
+  box-shadow:0 5px 15px rgba(255,75,43,0.3);
+  transition: all 0.3s ease;
+}
+
+.popup-content button:hover { transform:translateY(-2px); box-shadow:0 8px 20px rgba(255,65,108,0.4); }
+.popup-content button:active { transform: scale(0.97); }
+
+.close-btn { position:absolute; top:10px; right:15px; font-size:22px; cursor:pointer; color:#333; }
+
+.success-msg { color:green; font-weight:bold; margin-top:15px; }
+.error-msg { color:red; font-weight:bold; margin-top:15px; }
+
+/* Footer */
+footer {
+  background:white; padding:20px 30px; border-radius:15px;
+  box-shadow:0 8px 20px rgba(0,0,0,0.2);
+  text-align:center; margin-top:50px; color:#555;
+  font-size:14px; max-width:600px; width:90%; line-height:1.5;
+}
+
+footer a { color:#ff4b2b; text-decoration:none; }
+footer a:hover { text-decoration:underline; }
+
+/* Responsive */
+@media (max-width:768px){
+  body{padding:30px 15px;}
+  .box{width:90%; max-width:320px;}
+  .section-title{font-size:1rem;}
+  .used-count{font-size:11px;}
+}
+
+@media (max-width:480px){
+  h1{font-size:22px; margin-bottom:25px;}
+  .box{font-size:14px;}
+  .popup-content{padding:18px;}
+  .popup-content button{font-size:15px;}
+}
 </style>
-
 </head>
 <body>
+
 <img src="logo.jpg" class="circle-img" alt="Logo">
 <h1>Inspire4Ever Course</h1>
 
 <div class="boxes">
-  <div class="box" data-key="personal123">Personal Details</div>
-  <div class="box" data-key="Inspire4Ever$vRcyK">Tutorial</div>
-  <div class="box" data-key="third123">Third Section</div>
+  <div class="box" data-key="personal123">
+    <h3 class="section-title">Personal Details</h3>
+    <p class="used-count">👥 21 learners used this</p>
+  </div>
+
+  <div class="box" data-key="Inspire4Ever$vRcyK">
+    <h3 class="section-title">Tutorial</h3>
+    <p class="used-count">👥 304 learners used this</p>
+  </div>
+
+  <div class="box" data-key="third123">
+    <h3 class="section-title">Coming Soon</h3>
+    <p class="used-count">👥 *** learners used this</p>
+  </div>
 </div>
 
 <div class="popup" id="popup">
@@ -162,9 +188,10 @@
     <div id="msg"></div>
   </div>
 </div>
-<footer style="margin-top: 50px; text-align: center; color: #555; font-size: 14px; line-height: 1.5;">
+
+<footer>
   &copy; 2025 Inspire4Ever — Built with ❤️ & Neon<br>
-  Made responsive for phones. If images don't show, put the image files in the same folder as this HTML.
+  Made responsive for phones.
 </footer>
 
 <script>
@@ -178,11 +205,11 @@ const msg = document.getElementById('msg');
 let currentKey = "";
 let redirectPage = "";
 
+// Box click
 boxes.forEach(box => {
   box.addEventListener('click', () => {
     currentKey = box.getAttribute('data-key');
 
-    // Set corresponding redirect page
     if(currentKey === "personal123") redirectPage = "personal.html";
     else if(currentKey === "Inspire4Ever$vRcyK") redirectPage = "tutorial.html";
     else if(currentKey === "third123") redirectPage = "third.html";
@@ -190,32 +217,52 @@ boxes.forEach(box => {
     keyInput.value = "";
     msg.innerHTML = "";
     popup.style.display = "flex";
+    document.body.style.overflow = "hidden";
   });
 });
 
+// Close popup
 closeBtn.addEventListener('click', () => {
   popup.style.display = "none";
+  document.body.style.overflow = "auto";
 });
 
+// Outside click close
+window.addEventListener('click', (e) => {
+  if(e.target === popup){
+    popup.style.display = "none";
+    document.body.style.overflow = "auto";
+  }
+});
+
+// Submit key
 submitBtn.addEventListener('click', () => {
-  if(keyInput.value === currentKey){
+  if(keyInput.value.trim() === currentKey){
     msg.innerHTML = "<span class='success-msg'>Access Granted!</span>";
     setTimeout(()=> { 
       popup.style.display = "none"; 
-      window.location.href = redirectPage; // Redirect to the specific page
+      document.body.style.overflow = "auto";
+      window.location.href = redirectPage;
     }, 800);
   } else {
     msg.innerHTML = "<span class='error-msg'>Incorrect Key! Try Again.</span>";
   }
 });
 
-window.addEventListener('click', (e) => {
-  if(e.target === popup){
-    popup.style.display = "none";
-  }
+// Animated learner count
+document.querySelectorAll('.used-count').forEach(el => {
+  let target = parseInt(el.textContent.match(/\d+/) || [0]);
+  let count = 0;
+  let interval = setInterval(() => {
+    count += Math.ceil(target / 50);
+    el.textContent = `👥 ${count} learners used this`;
+    if (count >= target) {
+      el.textContent = `👥 ${target} learners used this`;
+      clearInterval(interval);
+    }
+  }, 30);
 });
 </script>
 
-
 </body>
-</html> 
+</html>
