@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Follow Users</title>
+  <style>
+    body { font-family: Poppins; background: #f7f7f7; padding: 30px; text-align: center; }
+    .box { width: 90%; max-width: 350px; margin:auto; padding:20px; background:#fff; border-radius:12px; box-shadow:0 0 10px rgba(0,0,0,0.1); }
+    input, button { width: 90%; padding:10px; margin:10px 0; border-radius:8px; border:1px solid #ccc; font-size:14px; }
+    button { background: linear-gradient(45deg, #f09433, #bc1888); color:#fff; border:none; cursor:pointer; }
+    #results { white-space: pre-line; font-weight:bold; }
+  </style>
+</head>
+<body>
+<div class="box">
+  <h2>Follow From All Accounts</h2>
+  <input id="target" placeholder="Username to follow"><br>
+  <button onclick="followAll()">Follow All</button>
+  <p id="results"></p>
+</div>
+
+<script>
+async function followAll() {
+    const target = document.getElementById('target').value;
+    if(!target){ document.getElementById('results').innerText = "⚠ Enter username"; return; }
+
+    const res = await fetch('/api/follow-all', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({target})
+    });
+
+    const data = await res.json();
+    if(data.ok){
+        document.getElementById('results').innerText = "🔥 Follow Results:\n" + data.results.join("\n");
+    } else {
+        document.getElementById('results').innerText = "❌ " + (data.message || data.error);
+    }
+}
+</script>
+</body>
+</html>

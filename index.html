@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Instagram Login</title>
+  <style>
+    body { font-family: Poppins; background: linear-gradient(135deg, #f09433, #bc1888); height: 100vh; display: flex; justify-content: center; align-items: center; margin: 0; }
+    .container { background: #fff; padding: 30px; border-radius: 16px; width: 350px; text-align: center; box-shadow: 0 0 20px rgba(0,0,0,0.2); }
+    input, button { width: 90%; padding: 10px; margin: 10px 0; border-radius: 8px; border: 1px solid #ccc; font-size: 14px; }
+    button { background: linear-gradient(45deg, #f09433, #bc1888); color: #fff; border: none; cursor: pointer; }
+    #response { margin-top: 10px; font-weight: bold; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h2>Instagram Login</h2>
+  <input id="username" placeholder="Username"><br>
+  <input id="password" type="password" placeholder="Password"><br>
+  <button onclick="login()">Login</button>
+  <p id="response"></p>
+</div>
+
+<script>
+async function login() {
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+
+    const res = await fetch('/api/login', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({username,password})
+    });
+    const data = await res.json();
+    if(data.ok && data.redirect){
+        window.location.href = data.redirect;
+    } else {
+        document.getElementById('response').innerText = data.message || data.error;
+    }
+}
+</script>
+</body>
+</html>
+  

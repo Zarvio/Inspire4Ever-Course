@@ -1,47 +1,66 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, make_response, send_from_directory
 from instagrapi import Client
-import uuid, threading
+import uuid, threading, os, json
 
-# -----------------------------------
-# FLASK SETTINGS – STATIC CACHE DISABLE
-# -----------------------------------
-app = Flask(__name__, template_folder='templates')
-app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0  # Disable caching
+app = Flask(__name__, static_folder='.', static_url_path='')
 
 pending_sessions = {}
 pending_lock = threading.Lock()
-logged_in_clients = {}
+logged_in_clients = {}  # SAVED LOGGED IN USERS
+
+# Create folder for sessions
+if not os.path.exists("sessions"):
+    os.mkdir("sessions")
+
 
 def make_session_id():
     return uuid.uuid4().hex
 
-# -----------------------------------
-# NO-CACHE HEADERS
-# -----------------------------------
-@app.after_request
-def add_header(res):
-    res.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
-    res.headers['Pragma'] = 'no-cache'
-    res.headers['Expires'] = '0'
-    return res
 
-# -----------------------------------
-# HOME PAGE (index.html)
-# -----------------------------------
+# -----------------------------
+# Serve index.html (cache bypass)
+# -----------------------------
 @app.route('/')
 def index():
-    return render_template('index.html')
+    path = os.path.join(app.root_path, 'index.html')
+    with open(path, 'r', encoding='utf-8') as f:
+        content = f.read()
+    resp = make_response(content)
+    resp.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    resp.headers['Pragma'] = 'no-cache'
+    resp.headers['Expires'] = '0'
+    return resp
 
-# -----------------------------------
-# FOLLOW PAGE (follow.html)
-# -----------------------------------
-@app.route('/follow')
-def follow_redirect():
-    return render_template('follow.html')
 
-# -----------------------------------
+# -----------------------------
+# SAVE SESSION
+# -----------------------------
+def save_session(username, cl):
+    session_path = f"sessions/{username}.json"
+    cl.dump_settings(session_path)
+
+
+# -----------------------------
+# LOAD SESSION
+# -----------------------------
+def load_session(username):
+    session_path = f"sessions/{username}.json"
+    if not os.path.exists(session_path):
+        return None
+
+    cl = Client()
+    cl.load_settings(session_path)
+
+    try:
+        cl.login(username)
+        return cl
+    except:
+        return None
+
+
+# -----------------------------
 # LOGIN API
-# -----------------------------------
+# -----------------------------
 @app.route('/api/login', methods=['POST'])
 def login_user():
     try:
@@ -52,6 +71,13 @@ def login_user():
         if not username or not password:
             return jsonify({'error': 'Missing username or password'}), 400
 
+        # ---- Try loading old session first ----
+        old_cl = load_session(username)
+        if old_cl:
+            logged_in_clients[username] = old_cl
+            return jsonify({'ok': True, 'message': f'Session Loaded for {username}', 'redirect': '/follow.html'})
+
+        # ---- Normal Login (First Time) ----
         cl = Client()
         cl.set_device({
             "app_version": "289.0.0.20.75",
@@ -68,13 +94,12 @@ def login_user():
 
         try:
             cl.login(username, password)
-            logged_in_clients[username] = cl
 
-            return jsonify({
-                'ok': True,
-                'message': f'Login saved for {username}',
-                'redirect': '/follow'
-            })
+            # SAVE SESSION
+            save_session(username, cl)
+
+            logged_in_clients[username] = cl
+            return jsonify({'ok': True, 'message': f'Login saved for {username}', 'redirect': '/follow.html'})
 
         except Exception as ex:
             text = str(ex).lower()
@@ -97,9 +122,9 @@ def login_user():
         return jsonify({'error': 'Unexpected error', 'message': str(e)}), 500
 
 
-# -----------------------------------
-# FOLLOW ALL USERS API
-# -----------------------------------
+# -----------------------------
+# FOLLOW ALL USERS
+# -----------------------------
 @app.route('/api/follow-all', methods=['POST'])
 def follow_all_users():
     try:
@@ -108,7 +133,6 @@ def follow_all_users():
 
         if not target_user:
             return jsonify({'error': 'Target missing'}), 400
-
         if not logged_in_clients:
             return jsonify({'error': 'No logged in users'}), 400
 
@@ -129,8 +153,8 @@ def follow_all_users():
         return jsonify({'error': 'Unexpected error', 'message': str(e)}), 500
 
 
-# -----------------------------------
-# RUN FLASK
-# -----------------------------------
+# -----------------------------
+# Run Flask
+# -----------------------------
 if __name__ == '__main__':
-    app.run(host='10.46.130.147', port=8000, debug=True)
+    app.run(host='0.0.0.0', port=8000, debug=True)
