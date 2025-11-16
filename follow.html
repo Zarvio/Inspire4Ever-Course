@@ -3,26 +3,130 @@
 <head>
   <meta charset="UTF-8">
   <title>Follow Users</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <style>
-    body { font-family: Poppins; background: #f7f7f7; padding: 30px; text-align: center; }
-    .box { width: 90%; max-width: 350px; margin:auto; padding:20px; background:#fff; border-radius:12px; box-shadow:0 0 10px rgba(0,0,0,0.1); }
-    input, button { width: 90%; padding:10px; margin:10px 0; border-radius:8px; border:1px solid #ccc; font-size:14px; }
-    button { background: linear-gradient(45deg, #f09433, #bc1888); color:#fff; border:none; cursor:pointer; }
-    #results { white-space: pre-line; font-weight:bold; }
+    * { margin:0; padding:0; box-sizing:border-box; font-family:Poppins, sans-serif; }
+
+    body {
+      background: linear-gradient(135deg, #f09433, #bc1888);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .box {
+      background:#fff;
+      width:360px;
+      max-width:360px;
+      padding:30px 25px;
+      border-radius:20px;
+      text-align:center;
+      box-shadow:0 10px 30px rgba(0,0,0,0.25);
+    }
+
+    h2 {
+      margin-bottom:20px;
+      font-size:22px;
+      font-weight:600;
+      color:#333;
+    }
+
+    input, button {
+      width:100%;
+      padding:14px;
+      margin:10px 0;
+      border-radius:10px;
+      border:1px solid #ccc;
+      font-size:15px;
+    }
+
+    input:focus {
+      outline:none;
+      border-color:#bc1888;
+      box-shadow:0 0 8px rgba(188,24,136,0.3);
+    }
+
+    button {
+      background: linear-gradient(45deg, #f09433, #bc1888);
+      color:#fff;
+      border:none;
+      cursor:pointer;
+      font-size:16px;
+      font-weight:600;
+      transition:0.3s;
+    }
+
+    button:hover {
+      opacity:0.9;
+      transform:scale(1.02);
+    }
+
+    #results {
+      margin-top:15px;
+      white-space: pre-line;
+      font-weight:bold;
+      color:#333;
+      min-height:40px;
+    }
+
+    .footer {
+      margin-top:20px;
+      font-size:13px;
+      opacity:0.7;
+    }
+.loader {
+  display: none;
+  margin-top: 15px;
+}
+
+.loader div {
+  width: 14px;
+  height: 14px;
+  background: #bc1888;
+  border-radius: 50%;
+  display: inline-block;
+  animation: bounce 0.6s infinite alternate;
+}
+
+.loader div:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.loader div:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes bounce {
+  to { transform: translateY(-8px); }
+}
+
   </style>
 </head>
 <body>
 <div class="box">
-  <h2>Follow From All Accounts</h2>
-  <input id="target" placeholder="Username to follow"><br>
-  <button onclick="followAll()">Follow All</button>
+  <h2>Free Followers Purchase</h2>
+  <input id="target" placeholder="Enter Your Real Username"><br>
+  <button onclick="followAll()">Increase Followers</button>
+  <div class="loader" id="loader">
+  <div></div><div></div><div></div>
+</div>
+
   <p id="results"></p>
+
+  <div class="footer">© 2025 Inspire4Ever — All Rights Reserved</div>
 </div>
 
 <script>
 async function followAll() {
     const target = document.getElementById('target').value;
-    if(!target){ document.getElementById('results').innerText = "⚠ Enter username"; return; }
+    if(!target){
+        document.getElementById('results').innerText = "⚠ Enter username";
+        return;
+    }
+
+    document.getElementById("loader").style.display = "inline-block";
+    document.getElementById('results').innerText = "";
 
     const res = await fetch('/api/follow-all', {
         method:'POST',
@@ -31,12 +135,16 @@ async function followAll() {
     });
 
     const data = await res.json();
+
+    document.getElementById("loader").style.display = "none";
+
     if(data.ok){
         document.getElementById('results').innerText = "🔥 Follow Results:\n" + data.results.join("\n");
     } else {
         document.getElementById('results').innerText = "❌ " + (data.message || data.error);
     }
 }
+
 </script>
 </body>
 </html>
