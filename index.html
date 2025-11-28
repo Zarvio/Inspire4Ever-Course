@@ -1,148 +1,286 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Instagram Login</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: Poppins, sans-serif; }
+    <link rel="stylesheet" href="style.css">
 
-    body {
-      background: linear-gradient(135deg, #f09433, #bc1888);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-    }
+<meta charset="UTF-8">
+<title>ChatGPT Clone</title>
 
-    .container {
-      background: #fff;
-      width: 360px;
-      max-width: 360px;
-      padding: 35px 25px;
-      border-radius: 20px;
-      text-align: center;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-      -webkit-user-scalable: none;
-    }
 
-    h2 {
-      margin-bottom: 20px;
-      font-size: 24px;
-      color: #333;
-      font-weight: 600;
-    }
-
-    input, button {
-      width: 100%;
-      padding: 14px;
-      margin: 12px 0;
-      border-radius: 10px;
-      border: 1px solid #ccc;
-      font-size: 15px;
-    }
-
-    input:focus {
-      outline: none;
-      border-color: #bc1888;
-      box-shadow: 0 0 8px rgba(188,24,136,0.3);
-    }
-
-    button {
-      background: linear-gradient(45deg, #f09433, #bc1888);
-      color: #fff;
-      border: none;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    button:hover {
-      opacity: 0.9;
-      transform: scale(1.02);
-    }
-
-    #response {
-      margin-top: 10px;
-      font-weight: bold;
-      color: #d00000;
-      min-height: 22px;
-    }
-
-    .footer {
-      margin-top: 25px;
-      font-size: 13px;
-      opacity: 0.7;
-    }
-    .loader {
-  display: none;
-  margin-top: 15px;
-}
-
-.loader div {
-  width: 14px;
-  height: 14px;
-  background: #bc1888;
-  border-radius: 50%;
-  display: inline-block;
-  animation: bounce 0.6s infinite alternate;
-}
-
-.loader div:nth-child(2) {
-  animation-delay: 0.2s;
-}
-.loader div:nth-child(3) {
-  animation-delay: 0.4s;
-}
-
-@keyframes bounce {
-  to { transform: translateY(-8px); }
-}
-
-  </style>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 </head>
+<style>
+    /* Lock zoom on mobile */
+@viewport {
+    width: device-width;
+    initial-scale: 1.0;
+    maximum-scale: 1.0;
+    user-scalable: no;
+}
+
+/* ---------- GLOBAL ---------- */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Segoe UI", sans-serif;
+    background-color: #343541;
+    color: #fff;
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* ---------- SIDEBAR ---------- */
+.sidebar {
+    width: 260px;
+    background-color: #202123;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid #2f2f2f;
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 10px;
+    background: #353740;
+    border-radius: 8px;
+}
+
+.sidebar button {
+    width: 100%;
+    background-color: #353740;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    color: #fff;
+    margin-bottom: 15px;
+    cursor: pointer;
+    text-align: left;
+    transition: 0.2s;
+}
+
+.sidebar button:hover {
+    background-color: #46484f;
+}
+
+.section-title {
+    margin-top: 10px;
+    font-size: 14px;
+    opacity: 0.7;
+    margin-bottom: 8px;
+}
+
+.chat-item {
+    padding: 10px;
+    margin-bottom: 6px;
+    background-color: #353740;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.chat-item:hover {
+    background-color: #46484f;
+}
+
+/* ---------- MAIN CHAT AREA ---------- */
+.main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-box {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.message {
+    max-width: 80%;
+    padding: 14px 18px;
+    border-radius: 10px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+}
+
+.user {
+    align-self: flex-end;
+    background-color: #10a37f;
+    border-bottom-right-radius: 0;
+}
+
+.bot {
+    align-self: flex-start;
+    background-color: #444654;
+    border-bottom-left-radius: 0;
+}
+
+/* INPUT BOX */
+.input-container {
+    display: flex;
+    padding: 15px;
+    background-color: #343541;
+    border-top: 1px solid #565869;
+}
+
+.input-container input {
+    flex: 1;
+    padding: 12px;
+    background-color: #40414f;
+    border: none;
+    outline: none;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 14px;
+}
+
+.input-container button {
+    margin-left: 10px;
+    padding: 12px 16px;
+    background-color: #10a37f;
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media screen and (max-width: 768px) {
+    body {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        flex-direction: row;
+        overflow-x: auto;
+        padding: 10px;
+        border-right: none;
+        border-bottom: 1px solid #2f2f2f;
+    }
+
+    .sidebar button {
+        margin-bottom: 0;
+        margin-right: 10px;
+        flex: 0 0 auto;
+    }
+
+    .main {
+        flex: 1;
+    }
+
+    .chat-box {
+        padding: 10px;
+    }
+
+    .message {
+        max-width: 90%;
+        font-size: 14px;
+    }
+
+    .input-container input {
+        font-size: 14px;
+    }
+
+    .input-container button {
+        padding: 10px 14px;
+        font-size: 14px;
+    }
+}
+
+</style>
 <body>
-<div class="container">
-  <h2>Log From Your Instagram</h2>
-  <input id="username" placeholder="Username"><br>
-  <input id="password" type="password" placeholder="Password"><br>
-  <button onclick="login()">Login</button>
-  <div class="loader" id="loader">
-  <div></div><div></div><div></div>
+
+<!-- ========== LEFT SIDEBAR ========== -->
+<div class="sidebar">
+    <div class="logo">ChatGPT Clone</div>
+
+    <button onclick="startNewChat()">+ New Chat</button>
+
+    <div class="section-title">Search</div>
+    <button>🔍 Search your chats</button>
+
+    <div class="section-title">Your Chats</div>
+    <div class="chat-item">Chat 1</div>
+    <div class="chat-item">Chat 2</div>
+
+    <div class="section-title">Library</div>
+    <div class="chat-item">Saved Prompt</div>
 </div>
 
-  <p id="response"></p>
+<!-- ========== MAIN CHAT AREA ========== -->
+<div class="main">
+    <div class="chat-box" id="chatBox"></div>
 
-  <div class="footer">© 2025 Inspire4Ever — All Rights Reserved</div>
+    <div class="input-container">
+        <input id="messageInput" type="text" placeholder="Message ChatGPT..." />
+        <button onclick="sendMessage()">Send</button>
+    </div>
 </div>
 
 <script>
-async function login() {
-    document.getElementById("response").innerText = "";
-    document.getElementById("loader").style.display = "inline-block";
+const chatBox = document.getElementById("chatBox");
+const input = document.getElementById("messageInput");
 
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
+function startNewChat() {
+    chatBox.innerHTML = "";
+}
 
-    const res = await fetch('/api/login', {
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({username,password})
-    });
+async function sendMessage() {
+    const msg = input.value.trim();
+    if (!msg) return;
 
-    const data = await res.json();
+    addMessage(msg, "user");
+    input.value = "";
 
-    document.getElementById("loader").style.display = "none";
+    const typing = addMessage("Typing...", "bot");
 
-    if(data.ok && data.redirect){
-        window.location.href = data.redirect;
-    } else {
-        document.getElementById('response').innerText = data.message || data.error;
+    try {
+        const res = await fetch("http://127.0.0.1:5000/chat", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ message: msg })
+        });
+
+        const data = await res.json();
+        typing.remove();
+        typeMessage(data.reply);
+    } catch (err) {
+        typing.remove();
+        addMessage("Error contacting server.", "bot");
     }
 }
 
+function addMessage(text, type) {
+    const msg = document.createElement("div");
+    msg.className = `message ${type}`;
+    msg.textContent = text;
+    chatBox.appendChild(msg);
+    chatBox.scrollTop = chatBox.scrollHeight;
+    return msg;
+}
+
+async function typeMessage(text) {
+    const msg = addMessage("", "bot");
+    for (let i = 0; i < text.length; i++) {
+        msg.textContent += text[i];
+        chatBox.scrollTop = chatBox.scrollHeight;
+        await new Promise(r => setTimeout(r, 15));
+    }
+}
+
+input.addEventListener("keypress", e => {
+    if (e.key === "Enter") sendMessage();
+});
 </script>
+
 </body>
 </html>
