@@ -1,0 +1,154 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial;
+}
+
+body {
+    background: #070707f9;
+    color: white;
+}
+
+/* Search Header */
+.search-header {
+    padding: 15px;
+    background: #07070700;
+    position: sticky;
+    top: 0;
+}
+
+#searchInput {
+    width: 100%;
+    padding: 12px 15px;
+    font-size: 16px;
+    border-radius: 12px;
+    border: none;
+    outline: none;
+    background: rgba(255,255,255,0.1);
+    color: white;
+}
+
+/* Tags */
+.section-title {
+    margin: 20px 15px 10px;
+    opacity: 0.8;
+}
+
+.tags-box {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 0 15px;
+}
+
+.tag {
+    padding: 6px 14px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 20px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+/* Video Grid */
+.video-grid {
+    columns: 2;
+    gap: 10px;
+    padding: 15px;
+}
+
+.video {
+    width: 100%;
+    border-radius: 10px;
+    overflow: hidden;
+    background: rgba(255,255,255,0.1);
+}
+
+.video img {
+    width: 100%;
+    display: block;
+}
+
+/* Bottom Navigation */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: #07070700;
+    backdrop-filter: blur(8px);
+    padding: 10px 0;
+    display: flex;
+    justify-content: space-around;
+}
+
+.nav-item {
+    text-align: center;
+    color: #bbb;
+    font-size: 14px;
+    padding: 8px 15px;
+    border-radius: 15px;
+}
+
+.nav-item span {
+    display: block;
+    font-size: 12px;
+    margin-top: 3px;
+}
+
+.active {
+    background: rgba(255,255,255,0.12);
+    color: white;
+}
+
+#searchVideoInput {
+    width: 100%;
+    padding: 12px 15px;
+    font-size: 16px;
+    border-radius: 12px;
+    border: none;
+    outline: none;
+    background: rgba(255,255,255,0.1);
+    color: white;
+}
+
+.suggestions {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.suggestion-item {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    border-bottom: 1px solid #333;
+    cursor: pointer;
+}
+
+.suggestion-item:last-child {
+    border-bottom: 0;
+}
+
+.suggestion-photo {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+}
+
+.suggestion-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.suggestion-username {
+    font-weight: bold;
+}
+
+.suggestion-name {
+    color: #aaa;
+    font-size: 13px;
+}
+
+

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel</title>
+<style>
+    /* ---------------- Body ---------------- */
+    body {
+        background: #020c1b;
+        color: white;
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    /* ---------------- Panel Container ---------------- */
+    .panel-container {
+        background: #0a192f;
+        padding: 30px 40px;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+        text-align: center;
+    }
+
+    .panel-container h2 {
+        margin-bottom: 25px;
+        color: #fff;
+    }
+
+    /* ---------------- Buttons ---------------- */
+    .panel-btn {
+        display: block;
+        width: 200px;
+        padding: 12px;
+        margin: 10px auto;
+        font-size: 16px;
+        font-weight: bold;
+        color: #fff;
+        background-color: #0095f6; /* Instagram Blue */
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .panel-btn:hover {
+        background-color: #0077cc;
+    }
+</style>
+</head>
+<body>
+
+<div class="panel-container">
+    <h2>Admin Panel</h2>
+
+    <button class="panel-btn" id="verifyBtn">Verify BAdge </button>
+    <button class="panel-btn" id="checkinBtn">Delete User</button>
+    <button class="panel-btn" id="reportsBtn">Reports</button>
+</div>
+
+<script>
+    // ---------------- Button References ----------------
+    const verifyBtn = document.getElementById("verifyBtn");
+    const checkinBtn = document.getElementById("checkinBtn");
+    const reportsBtn = document.getElementById("reportsBtn");
+
+    // ---------------- Click Events ----------------
+    verifyBtn.addEventListener("click", () => {
+        window.location.href = "verify.html";
+    });
+
+    checkinBtn.addEventListener("click", () => {
+        window.location.href = "delete.html";
+    });
+
+    reportsBtn.addEventListener("click", () => {
+        window.location.href = "reports.html";
+    });
+</script>
+
+</body>
+</html>

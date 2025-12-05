@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Profile — Pinoro</title>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <link rel="stylesheet" href="profile.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <!-- Firebase v8 -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+</head>
+<body>
+  <div class="page">
+
+    <!-- Header (small) -->
+    <header class="header">
+      <div class="left"></div>
+      <div class="title">Profile</div>
+      <div class="right"></div>
+    </header>
+
+    <main class="container">
+
+      <!-- LOGIN CARD -->
+      <div id="loginBox" class="card center">
+        <img src="default.jpg" alt="avatar" class="login-avatar">
+        <h2>Continue with Google</h2>
+        <button id="googleLoginBtn" class="btn primary">
+          <i class="fa-brands fa-google"></i> Continue with Google
+        </button>
+        <p class="muted">Only needed to upload or follow. You can still browse without login.</p>
+      </div>
+
+      <!-- NAME FORM -->
+      <div id="nameBox" class="card hidden">
+        <h2>Enter your name</h2>
+        <div class="row">
+          <input id="firstName" placeholder="First name" />
+          <input id="lastName" placeholder="Surname" />
+        </div>
+        <button id="saveNameBtn" class="btn">Continue</button>
+      </div>
+
+      <!-- USERNAME FORM -->
+      <div id="usernameBox" class="card hidden">
+        <h2>Choose a username</h2>
+        <div class="username-field">
+          <div class="at">@</div>
+          <input id="username" placeholder="username (min 4 chars)" />
+          <div id="usernameIcon" class="status-icon"></div>
+        </div>
+        <p id="errorMsg" class="error"></p>
+        <button id="saveUsernameBtn" class="btn disabled" disabled>Save</button>
+      </div>
+
+<!-- Profile Complete Popup -->
+<div id="profilePopup" class="popup hidden">
+  <div class="popup-box">
+      <h2>🎉 Profile Completed!</h2>
+      <p>Your profile is now ready.</p>
+      <button id="popupBtn">Let's Go</button>
+  </div>
+</div>
+
+
+<!-- Loader Overlay -->
+  <div id="loaderOverlay" class="loader-overlay">
+    <div class="loader"></div>
+  </div>
+
+
+
+
+      <!-- DONE / PROFILE PAGE -->
+      <section id="profileView" class="card hidden profile-card">
+        <div class="avatar-wrap">
+          <div class="avatar-ring">
+            <img id="profilePic" class="avatar" src="default.jpg" alt="avatar">
+          </div>
+          <label for="uploadPhoto" class="edit-photo" title="Change photo">
+            <i class="fa-solid fa-pen"></i>
+          </label>
+          <input id="uploadPhoto" type="file" accept="image/*" hidden>
+        </div>
+
+        <div class="info">
+          <h2 id="displayName" class="name">Your Name</h2>
+          <p id="displayUsername" class="handle">@username</p>
+
+          <div class="counts">
+            <div><span id="followersCount" class="num">0</span> <span class="lbl">followers</span></div>
+            <div><span id="followingCount" class="num">0</span> <span class="lbl">following</span></div>
+          </div>
+
+          <div class="actions">
+            <button id="shareBtn" class="btn outline"><i class="fa-solid fa-share-nodes"></i> Share</button>
+            <button id="editBtn" class="btn outline" disabled><i class="fa-solid fa-pen-to-square"></i> Edit profile</button>
+          </div>
+        </div>
+
+        <div class="tabs">
+         <!--   <button class="tab active">Created</button> -->
+          <button class="tab">Saved</button>
+        </div>
+
+        <div class="empty-state">
+          <p><strong>No Pins created yet</strong></p>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Bottom navigation (kept similar to your current) -->
+    <nav class="bottom-nav">
+      <a class="nav-item" id="btnHome"><i class="fa-solid fa-house"></i><span>Home</span></a>
+      <a class="nav-item" id="btnSearch"><i class="fa-solid fa-magnifying-glass"></i><span>Search</span></a>
+      <a class="nav-item" id="btnUpload"><i class="fa-solid fa-plus"></i><span>Upload</span></a>
+      <a class="nav-item" id="btnNotifs"><i class="fa-regular fa-bell"></i><span>Notification</span></a>
+      <a class="nav-item active" id="btnProfile"><i class="fa-regular fa-circle-user"></i><span>Profile</span></a>
+    </nav>
+
+    <script src="profile.js"></script>
+  </div>
+</body>
+</html>

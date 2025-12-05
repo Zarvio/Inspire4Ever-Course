@@ -1,0 +1,61 @@
+body {
+    background: #020c1b;
+    font-family: Arial;
+    color: white;
+    text-align: center;
+    padding-top: 50px;
+}
+
+.box {
+    background: #0a192f;
+    padding: 30px;
+    width: 350px;
+    margin: auto;
+    border-radius: 15px;
+}
+
+input {
+    width: 90%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 8px;
+    border: none;
+}
+
+button {
+    width: 90%;
+    padding: 12px;
+    margin-top: 10px;
+    border: none;
+    color: white;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#searchBtn {
+    background: #007bff;
+}
+
+#searchBtn:hover {
+    background: #005fcc;
+}
+
+.delete {
+    background: #ff4444;
+}
+
+.delete:hover {
+    background: #cc0000;
+}
+
+.hidden {
+    display: none;
+}
+
+#userBox {
+    margin-top: 15px;
+    padding: 15px;
+    background: #112240;
+    border-radius: 10px;
+}

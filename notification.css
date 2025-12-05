@@ -1,0 +1,105 @@
+/* notification.css (Home.css style ke hisab se) */
+
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial;
+}
+
+body {
+    background: #070707f9;
+    color: white;
+}
+
+/* Header */
+.top-header {
+    width: 100%;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: transparent;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.profile-icon {
+    width: 42px;
+    height: 42px;
+    background: url('default.jpg');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.2);
+    box-shadow: 0 0 10px rgba(0,0,0,0.4);
+    cursor: pointer;
+}
+
+/* Content Area */
+.main-content {
+    padding: 20px;
+    padding-bottom: 100px;
+}
+
+.notif-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.notif-item {
+    background: rgba(255,255,255,0.05);
+    padding: 12px 15px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    backdrop-filter: blur(4px);
+}
+
+.notif-item i {
+    font-size: 20px;
+    color: #1e90ff;
+}
+
+.notif-item .notif-text {
+    font-size: 14px;
+    color: white;
+}
+
+/* Bottom Navigation */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: #07070700;
+    backdrop-filter: blur(8px);
+    padding: 10px 0;
+    display: flex;
+    justify-content: space-around;
+}
+
+.nav-item {
+    text-align: center;
+    color: #bbb;
+    font-size: 14px;
+    padding: 8px 15px;
+    border-radius: 15px;
+}
+
+.nav-item span {
+    display: block;
+    font-size: 12px;
+    margin-top: 3px;
+}
+
+.active {
+    background: rgba(255,255,255,0.12);
+    color: white;
+}

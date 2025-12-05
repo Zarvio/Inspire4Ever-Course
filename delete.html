@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Delete User</title>
+<link rel="stylesheet" href="delete.css">
+</head>
+<body>
+
+<div class="box">
+    <h2>Delete User</h2>
+
+    <input type="text" id="usernameInput" placeholder="Enter Username">
+
+    <button id="searchBtn">Search User</button>
+
+    <div id="userBox" class="hidden">
+        <h3>User Found</h3>
+        <p><b>UID:</b> <span id="uidShow"></span></p>
+        <p><b>Username:</b> <span id="unameShow"></span></p>
+        <p><b>Email:</b> <span id="emailShow"></span></p>
+
+        <button id="deleteBtn" class="delete">Delete User</button>
+    </div>
+
+    <p id="result"></p>
+</div>
+
+<!-- Firebase Scripts -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+<script src="delete.js"></script>
+
+</body>
+</html>

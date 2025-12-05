@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Profile</title>
+  <link rel="stylesheet" href="user.css">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+</head>
+<body>
+  <div id="loaderOverlay" class="loader-overlay">Loading...</div>
+
+  <div id="profileView" class="profile-container hidden">
+    <img id="profilePic" class="profile-pic" src="default.jpg" alt="Profile Picture">
+    <h2 id="displayName"></h2>
+    <p id="displayUsername"></p>
+    <div class="follow-info">
+      <span>Followers: <span id="followersCount">0</span></span>
+      <span>Following: <span id="followingCount">0</span></span>
+    </div>
+    <button id="followBtn">Follow</button>
+  </div>
+
+
+<nav class="bottom-nav">
+    <a class="nav-item" id="btnHome">
+        <i class="fa-solid fa-house"></i>
+        <span>Home</span>
+    </a>
+
+    <a class="nav-item active" id="btnSearch">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <span>Search</span>
+    </a>
+
+<a class="nav-item" id="btnUpload">
+        <i class="fa-solid fa-plus"></i>
+        <span>Upload</span>
+    </a>
+
+    <a class="nav-item" id="btnNotifs">
+        <i class="fa-regular fa-bell"></i>
+        <span>Notification</span>
+    </a>
+
+    <a class="nav-item" id="btnProfile">
+        <i class="fa-regular fa-circle-user"></i>
+        <span>Profile</span>
+    </a>
+</nav>
+
+
+
+  <script src="user.js"></script>
+</body>
+</html>

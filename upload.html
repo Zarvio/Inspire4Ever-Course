@@ -3,34 +3,42 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pinora Web</title>
-    <link rel="stylesheet" href="styles.css" />
+    <title>Upload - Pinora</title>
+    
+    <link rel="stylesheet" href="upload.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
 
 <body>
-    
+
     <!-- HEADER -->
-<header class="top-header">
-    <!-- Logo -->
-    <div class="logo">
-         Pinora
-    </div>
-</header>
+    <header class="top-header">
+        <h1 class="logo">Pinora</h1>
+        <div class="profile-icon"></div>
+    </header>
 
-              <!-- Meaasage -->
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+        <h2 class="welcome">Upload your Pins here</h2>
+<form id="uploadForm">
+    <input type="text" placeholder="Title" id="pinTitle" required>
+    
+    <!-- IMAGE/VIDEO FILE INPUT (IMPORTANT) -->
+    <input type="file" id="pinFile" accept="image/*,video/*" required>
 
-            <a class="nav-item" id="btnmessage">
-            <i class="fa-regular fa-message"></i>
-        </a>
+    <button type="submit">Upload</button>
+</form>
 
 
-<main class="main-content"></main>
+<!-- SUPABASE JS CDN ADD KARO -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="upload.js"></script>
 
+    </main>
 
     <!-- BOTTOM NAV -->
     <nav class="bottom-nav">
-        <a class="nav-item active" id="btnHome">
+        <a class="nav-item" id="btnHome">
             <i class="fa-solid fa-house"></i>
             <span>Home</span>
         </a>
@@ -40,7 +48,7 @@
             <span>Search</span>
         </a>
 
-        <a class="nav-item" id="btnUpload">
+        <a class="nav-item active" id="btnUpload">
             <i class="fa-solid fa-plus"></i>
             <span>Upload</span>
         </a>
@@ -54,14 +62,8 @@
             <i class="fa-regular fa-circle-user"></i>
             <span>Profile</span>
         </a>
-
-        <!-- Admin Panel Button (hidden by default) -->
-        <div id="adminPanelBtn" class="admin-panel hidden">Admin Panel</div>
     </nav>
 
-    
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="script.js"></script>
-
+    <script src="upload.js"></script>
 </body>
 </html>

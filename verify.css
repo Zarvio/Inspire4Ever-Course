@@ -1,0 +1,88 @@
+body {
+    background: #020c1b;
+    color: white;
+    font-family: Arial;
+    text-align: center;
+    padding-top: 50px;
+}
+
+/* Main Container */
+.verify-container {
+    width: 90%;
+    max-width: 400px;
+    margin: auto;
+    background: #0a192f;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+}
+
+input {
+    width: 95%;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    margin-bottom: 15px;
+}
+
+/* Buttons */
+button {
+    width: 100%;
+    padding: 12px;
+    background: #0095f6;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    margin-top: 10px;
+    font-weight: bold;
+    transition: .3s;
+}
+
+button:hover {
+    background: #0077cc;
+}
+
+/* User Details */
+#resultBox {
+    margin-top: 20px;
+    background: #112240;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+#userImg {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+
+.username-wrapper {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;                
+    margin-left: 10px;
+    line-height: 1;          /* Alignment perfect karta hai */
+}
+
+
+
+.verify-badge {
+    width: 18px;
+    height: 18px;
+    transform: translateY(2px);   /* Badge ki height perfectly adjust */
+}
+
+
+
+#userName {
+    font-size: 18px;
+    display: inline-block;
+}
+
+
+
+
+.hidden {
+    display: none;
+}

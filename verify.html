@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verify User</title>
+<!-- Firebase App -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+
+<!-- Firebase Auth (agar login ya user info chahiye) -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+
+<!-- Firebase Database -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+<link rel="stylesheet" href="verify.css">
+</head>
+<body>
+
+<div class="verify-container">
+    <h2>User Verification</h2>
+
+    <!-- Input -->
+    <input type="text" id="userIdInput" placeholder="Enter User UID">
+
+    <button id="searchBtn">Search</button>
+
+<div id="resultBox" class="hidden">
+    <img id="userImg" src="" alt="User Image">
+    <span class="username-wrapper">
+        <span id="userName"></span>
+        <img id="verifyBadge" class="verify-badge hidden" 
+             src="https://upload.wikimedia.org/wikipedia/commons/e/e4/Twitter_Verified_Badge.svg">
+    </span>
+</div>
+
+
+    <button id="verifyBtn" class="hidden">Add Verify Badge</button>
+</div>
+
+<script src="verify.js"></script>
+</body>
+</html>

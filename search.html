@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Search - Pinora</title>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+<link rel="stylesheet" href="search.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+
+<body>
+
+<header class="top-header">
+    
+    <div class="profile-icon"></div>
+</header>
+
+<main class="main-content">
+
+
+<!-- VIDEOS SEARCH (TOP) isme id change ki hai to sabi mein dekh lena feature mein iski id pahle username ki hai wo thi  -->
+<div class="search-header" id="userSearchBox">
+    <input type="text" id="searchVideoInput" name="user" placeholder="Search videos...">
+</div>
+
+
+<!-- VIDEO USERNAME (BOTTOM) -->
+<div class="search-header" id="videoSearchBox">
+    <input type="text" id="searchInput" name="video" placeholder="Search username...">
+</div>
+
+<!-- 🔹 Username Suggestions Box -->
+<div id="userSuggestions" class="suggestions hidden"></div>
+
+    
+    <!-- Tags / categories -->
+    <div class="section-title">Popular Tags</div>
+    <div class="tags-box">
+        <div class="tag">Music</div>
+        <div class="tag">Dance</div>
+        <div class="tag">Comedy</div>
+        <div class="tag">Animals</div>
+        <div class="tag">Sports</div>
+        <div class="tag">Travel</div>
+    </div>
+
+<!-- User List Below Tags -->
+<div id="userList" class="suggestions"></div>
+
+    <!-- Video grid -->
+    <div id="resultsGrid" class="video-grid"></div>
+</main>
+
+<nav class="bottom-nav">
+    <a class="nav-item" id="btnHome">
+        <i class="fa-solid fa-house"></i>
+        <span>Home</span>
+    </a>
+
+    <a class="nav-item active" id="btnSearch">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <span>Search</span>
+    </a>
+
+<a class="nav-item" id="btnUpload">
+        <i class="fa-solid fa-plus"></i>
+        <span>Upload</span>
+    </a>
+
+    <a class="nav-item" id="btnNotifs">
+        <i class="fa-regular fa-bell"></i>
+        <span>Notification</span>
+    </a>
+
+    <a class="nav-item" id="btnProfile">
+        <i class="fa-regular fa-circle-user"></i>
+        <span>Profile</span>
+    </a>
+</nav>
+
+<script src="search.js"></script>
+</body>
+</html>
