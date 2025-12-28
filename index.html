@@ -1,67 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pinora Web</title>
-    <link rel="stylesheet" href="styles.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pinora App Download</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        background: #0f172a;
+        color: #fff;
+        text-align: center;
+    }
+
+    .container {
+        max-width: 500px;
+        margin: auto;
+        padding: 30px 15px;
+    }
+
+    .logo {
+        width: 120px;
+        height: 120px;
+        border-radius: 25px;
+        margin-bottom: 15px;
+        bottom: 78;
+    }
+
+    h1 {
+        margin: 10px 0;
+        font-size: 26px;
+    }
+
+    .download-btn {
+        display: inline-block;
+        margin: 20px 0;
+        padding: 14px 30px;
+        background: #22c55e;
+        color: #000;
+        font-size: 18px;
+        font-weight: bold;
+        border-radius: 40px;
+        text-decoration: none;
+        transition: 0.3s;
+    }
+
+    .download-btn:hover {
+        background: #16a34a;
+    }
+
+    .guidelines {
+        text-align: left;
+        margin-top: 30px;
+        background: #020617;
+        padding: 20px;
+        border-radius: 12px;
+    }
+
+    .guidelines h2 {
+        text-align: center;
+        margin-bottom: 15px;
+    }
+
+    .guidelines ul {
+        padding-left: 18px;
+    }
+
+    .guidelines li {
+        margin-bottom: 10px;
+        
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    footer {
+        margin-top: 25px;
+        font-size: 13px;
+        opacity: 0.6;
+    }
+</style>
 </head>
 
 <body>
-    
-    <!-- HEADER -->
-<header class="top-header">
-    <!-- Logo -->
-    <div class="logo">
-         Pinora
+
+<div class="container">
+ <!-- GUIDELINES -->
+    <div class="guidelines">
+        <h2>Important Guidelines</h2>
+        <ul>
+            <li>Install app only from this official website.</li>
+            <li>Allow “Install from Unknown Sources” before installing.</li>
+            <li>This app is completely safe and lightweight.</li>
+            <li>Do not modify or redistribute the APK.</li>
+            <li>App size is very small and works on low-end devices.</li>
+            <li>Internet connection may be required for some features.</li>
+            <li>We do not collect personal data.</li>
+            <li>Uninstall old version before updating.</li>
+            <li>For best experience, use latest Android version.</li>
+        </ul>
     </div>
-</header>
-
-              <!-- Meaasage -->
-
-            <a class="nav-item" id="btnmessage">
-            <i class="fa-regular fa-message"></i>
-        </a>
-
-
-<main class="main-content"></main>
-
-
-    <!-- BOTTOM NAV -->
-    <nav class="bottom-nav">
-        <a class="nav-item active" id="btnHome">
-            <i class="fa-solid fa-house"></i>
-            <span>Home</span>
-        </a>
-
-        <a class="nav-item" id="btnSearch">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <span>Search</span>
-        </a>
-
-        <a class="nav-item" id="btnUpload">
-            <i class="fa-solid fa-plus"></i>
-            <span>Upload</span>
-        </a>
-
-        <a class="nav-item" id="btnNotifs">
-            <i class="fa-regular fa-bell"></i>
-            <span>Notification</span>
-        </a>
-
-        <a class="nav-item" id="btnProfile">
-            <i class="fa-regular fa-circle-user"></i>
-            <span>Profile</span>
-        </a>
-
-        <!-- Admin Panel Button (hidden by default) -->
-        <div id="adminPanelBtn" class="admin-panel hidden">Admin Panel</div>
-    </nav>
-
     
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="script.js"></script>
+</div>
+<!-- APP LOGO -->
+    <img src="logo.png" alt="App Logo" class="logo">
+
+    <!-- APP NAME -->
+    <h1>Piora App</h1>
+
+    <!-- DOWNLOAD BUTTON -->
+    <a href="pinora.apk" class="download-btn" download>
+        Download App
+    </a>
+
+   
+
+    <footer>
+        © 2025 My Super App. All Rights Reserved.
+    </footer>
 
 </body>
 </html>
