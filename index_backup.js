@@ -752,7 +752,7 @@ if (modalUploader) {
 
 
     // Navigation
-    document.getElementById("btnHome")?.addEventListener("click", () => location.href = "main.html");
+    document.getElementById("btnHome")?.addEventListener("click", () => location.href = "index.html");
     document.getElementById("btnSearch")?.addEventListener("click", () => location.href = "search.html");
     document.getElementById("btnProfile")?.addEventListener("click", () => location.href = "profile.html");
     document.getElementById("btnUpload")?.addEventListener("click", () => location.href = "upload.html");

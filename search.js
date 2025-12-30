@@ -102,7 +102,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // NAVIGATION BUTTONS
     // ----------------------
     document.getElementById("btnHome").addEventListener("click", () => {
-        window.location.href = "index.html";
+        window.location.href = "main.html";
     });
 
     document.getElementById("btnSearch").addEventListener("click", () => {

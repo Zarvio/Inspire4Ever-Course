@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pinora Web</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+
+
+    </style>
+</head>
+
+<body>
+
+<!-- Welcome Popup -->
+<div id="welcomePopup" class="welcome-popup hidden">
+    <div class="popup-content">
+        <h1>Welcome to Pinora! 🎉</h1>
+        <p>Thank you for visiting our website. Explore amazing videos and enjoy your stay!</p>
+        <button id="closeWelcomeBtn">Get Started</button>
+    </div>
+</div>
+
+<style>
+/* Welcome Popup Styles */
+.welcome-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(221, 216, 216, 0.85); /* semi-dark overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    opacity: 1;
+    transition: opacity 0.5s ease;
+}
+
+.welcome-popup.hidden {
+    display: none;
+}
+
+.popup-content {
+    background: #040404;
+    padding: 50px;
+    max-width: 600px;
+    width: 90%;
+    text-align: center;
+    border-radius: 20px;
+    box-shadow: 0 0 30px rgba(0,0,0,0.5);
+    animation: popupScale 0.5s ease forwards;
+}
+
+.popup-content h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+.popup-content p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+}
+
+.popup-content button {
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 10px;
+    background: #4caf50;
+    color: #fff;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.popup-content button:hover {
+    transform: scale(1.1);
+}
+
+/* Popup animation */
+@keyframes popupScale {
+    0% { transform: scale(0.5); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+</style>
+
+<script>
+// Show popup only if first visit
+window.addEventListener('load', () => {
+    setTimeout(() => {
+        const firstVisit = localStorage.getItem('firstVisit');
+        if(!firstVisit) {
+            const popup = document.getElementById('welcomePopup');
+            popup.classList.remove('hidden');
+            localStorage.setItem('firstVisit', '1');
+        }
+    }, 3500); // intro overlay ke baad thoda delay (intro 3s + 0.5s fade)
+});
+
+// Close button
+document.getElementById('closeWelcomeBtn').addEventListener('click', () => {
+    const popup = document.getElementById('welcomePopup');
+    popup.style.opacity = '0';
+    setTimeout(() => popup.classList.add('hidden'), 500);
+});
+</script>
+
+<!-- HEADER -->
+<header class="top-header">
+    <div class="logo">Pinora</div>
+</header>
+
+<!-- Message Icon -->
+<a class="nav-item" id="btnmessage">
+    <i class="fa-regular fa-message"></i>
+</a>
+
+<!-- VIDEOS SEARCH (TOP) isme id change ki hai to sabi mein dekh lena feature mein iski id pahle username ki hai wo thi -->
+<div class="search-header" id="userSearchBox">
+    <input type="text" id="searchVideoInput" name="user" placeholder="Search videos...">
+</div> 
+<div class="filterBar">
+  <button class="filter-btn active" data-filter="all">All</button>
+  <button class="filter-btn" data-filter="following">Following</button>
+  <button class="filter-btn" data-filter="verified">Verified</button>
+  <button class="filter-btn" data-filter="popular">Popular</button>
+</div>
+
+<!-- Circular progress overlay, initially hidden -->
+<div id="downloadProgressOverlay" style="display:none;">
+    <div id="downloadProgressContainer">
+        <svg id="progressCircle" width="80" height="80">
+            <circle cx="40" cy="40" r="36" stroke="#ddd" stroke-width="6" fill="none" />
+            <circle id="progressCircleFill" cx="40" cy="40" r="36" stroke="#4caf50" stroke-width="6" fill="none" stroke-linecap="round" 
+                stroke-dasharray="226.2" stroke-dashoffset="226.2" transform="rotate(-90 40 40)" />
+        </svg>
+        <div id="progressPercent">0%</div>
+    </div>
+</div>
+
+<!-- ========== VIDEO BOX TEMPLATE (MAIN PAGE) ========== -->
+<!-- VIDEO BOX TEMPLATE -->
+<template id="videoBoxTemplate">
+    <div class="pin-box">
+        <div class="mediaContainer">
+            <!-- Overlaid uploader info -->
+            <div class="uploaderOverlay">
+                <img class="uploaderDP">
+                <span class="uploaderName"></span>
+            </div>
+
+            <!-- Overlaid views info -->
+            <div class="viewsOverlay">
+                <i class="fa-regular fa-eye"></i>
+                <span class="viewCount">0</span>
+            </div>
+
+            <!-- Media (video/image) -->
+            <!-- Lazy load video -->
+            <video class="lazyVideo" controls data-src=""></video>
+        </div>
+    </div>
+</template>
+
+<script>
+// Lazy loading for videos and images
+document.addEventListener('DOMContentLoaded', () => {
+    const lazyVideos = document.querySelectorAll('video.lazyVideo');
+    const lazyImages = document.querySelectorAll('img.lazyImage');
+
+    const lazyLoadObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if(entry.isIntersecting){
+                const el = entry.target;
+                
+                if(el.tagName === 'VIDEO'){
+                    el.src = el.dataset.src;
+                    el.load();
+                } else if(el.tagName === 'IMG'){
+                    el.src = el.dataset.src;
+                }
+
+                el.classList.remove('lazyVideo','lazyImage');
+                observer.unobserve(el);
+            }
+        });
+    }, {
+        root: null,
+        rootMargin: '0px 0px 200px 0px',
+        threshold: 0.1
+    });
+
+    lazyVideos.forEach(v => lazyLoadObserver.observe(v));
+    lazyImages.forEach(img => lazyLoadObserver.observe(img));
+});
+</script>
+
+
+
+<!-- ========== SMALL UPLOADER TEMPLATE (RELATED VIDEOS) ========== -->
+<template id="uploaderSmallTemplate">
+    <div class="uploaderHeaderSmall">
+        <img class="smallDP">
+        <span class="smallName"></span>
+    </div>
+</template>
+
+
+<!-- ========== MAIN CONTENT AREA ========== -->
+<main class="main-content"></main>
+<!-- ========== RELATED VIDEOS CONTAINER ========== -->
+
+<!-- 🚩 FLAG POPUP -->
+<div id="flagPopup" class="flag-popup hidden">
+  <div class="flag-popup-box">
+    <h3>Video Unavailable ⚠️</h3>
+    <p>We’ve reviewed your video and determined that it does not comply with Pinora’s content guidelines. 
+As a result, the video has been removed from the platform.
+
+If you believe this action was taken in error, please contact our support team for further assistance.
+.</p>
+    <button onclick="closeFlagPopup()">OK</button>
+  </div>
+</div>
+
+
+<!-- ========== SMALL UPLOADER TEMPLATE ========== -->
+<template id="relatedVideoTemplate">
+    <div class="relatedBox">
+
+        <!-- Small uploader header -->
+        <div class="uploaderHeaderSmall">
+            <img class="smallDP" src="">
+            <span class="smallName"></span>
+        </div>
+
+        <!-- Thumbnail -->
+        <img class="relatedThumb" src="">
+    </div>
+</template>
+
+
+<!-- Video Modal -->
+<div id="videoModal" class="modal hidden">
+  <div class="modal-content" id="modalContent">
+
+   <span class="closeBtn"><i class="fa-solid fa-arrow-left"></i></span>
+
+   <div class="modal-media-wrapper">
+
+    <video id="modalVideo" controls autoplay></video>
+    <img id="modalImage" style="display:none; border-radius:12px;">
+
+    <!-- 👁️ Views overlay for BIG video -->
+    <div class="modalViewsOverlay">
+        <i class="fa-regular fa-eye"></i>
+        <span id="modalViewCount">0</span>
+    </div>
+
+</div>
+
+<!-- Like + Comment Buttons -->
+<div class="like-section">
+    <button id="likeBtn">
+        <i class="fa-regular fa-heart"></i>
+        <span id="likeCount">0</span>
+    </button>
+
+    <button id="commentBtn">
+        <i class="fa-regular fa-comment"></i>
+        <span id="commentCount">0</span>
+    </button>
+    
+    <button id="shareBtn">
+        <i class="fa-solid fa-share"></i>
+    </button>
+   <button id="downloadBtn">
+    <i class="fa-solid fa-download"></i>
+</button>
+
+
+</div>
+
+
+<!-- Comment Input Box -->
+<div class="comment-input-box" id="commentInputBox">
+    <input type="text" id="commentInput" placeholder="Write a comment..." />
+    <button id="sendCommentBtn">Send</button>
+</div>
+
+<div class="comment-modal hidden" id="commentModal">
+    <div class="comment-modal-content">
+        <span class="closeCommentModal">&times;</span>
+        <h3>Comments</h3>
+        <div id="allCommentsList"></div>
+    </div>
+    
+
+</div>
+
+
+
+<div class="share-menu hidden" id="shareMenu">
+    <button class="shareOption" data-platform="whatsapp">
+        <img src="whatsapp.png" alt="WhatsApp" class="share-icon"> WhatsApp
+    </button>
+    <button class="shareOption" data-platform="telegram">
+        <img src="telegram.png" alt="Telegram" class="share-icon"> Telegram
+    </button>
+    <button class="shareOption" data-platform="copy">
+    <i class="fa-regular fa-copy share-icon"></i> Copy Link
+</button>
+</div>
+
+<!-- Link Copied Line -->
+<div id="linkCopied" class="link-copied hidden">Link copied!</div>
+
+
+<!-- Double Tap Heart -->
+<div id="doubleTapHeart">❤️</div>
+
+
+
+
+<h3 id="modalTitle"></h3>
+
+    <div id="relatedVideos" class="related-videos"></div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+    <a class="nav-item active" id="btnHome">
+        <i class="fa-solid fa-house"></i>
+        <span>Home</span>
+    </a>
+
+    <a class="nav-item" id="btnSearch">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <span>Search</span>
+    </a>
+
+    <a class="nav-item" id="btnUpload">
+        <i class="fa-solid fa-plus"></i>
+        <span>Upload</span>
+    </a>
+
+    <a class="nav-item" id="btnNotifs" style="position:relative;">
+  <i class="fa-regular fa-bell"></i>
+
+  <!-- 🔴 LIVE COUNTER -->
+  <span id="notifDot" class="notifCount" style="display:none;"></span>
+
+
+  <span>Notification</span>
+</a>
+
+
+
+
+
+    <a class="nav-item" id="btnProfile">
+        <i class="fa-regular fa-circle-user"></i>
+        <span>Profile</span>
+    </a>
+
+    <!-- Admin Panel Button -->
+    <div id="adminPanelBtn" class="admin-panel hidden">Admin Panel</div>
+</nav>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+<!-- Your JS -->
+<script src="script.js"></script>
+
+</body>
+</html>

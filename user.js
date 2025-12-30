@@ -42,7 +42,7 @@ if (!profileUid) {
 // ----------------------
 // NAVIGATION BUTTONS
 // ----------------------
-document.getElementById("btnHome").addEventListener("click", () => { window.location.href = "index.html"; });
+document.getElementById("btnHome").addEventListener("click", () => { window.location.href = "main.html"; });
 document.getElementById("btnSearch").addEventListener("click", () => { window.location.href = "search.html"; });
 document.getElementById("btnNotifs").addEventListener("click", () => { window.location.href = "notification.html"; });
 document.getElementById("btnProfile").addEventListener("click", () => { window.location.href = "profile.html"; });
@@ -341,7 +341,7 @@ async function loadUserVideos(uid) {
     card.appendChild(deleteBtn);
 
     card.addEventListener("click", () => {
-      window.location.href = `index.html?id=${post.id}`;
+      window.location.href = `main.html?id=${post.id}`;
     });
 
     container.appendChild(card);

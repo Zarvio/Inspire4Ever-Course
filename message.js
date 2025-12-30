@@ -388,7 +388,7 @@ backBtn.onclick = () => {
 };
 
 listBackBtn.onclick = () => {
-  window.location.href = "index.html";
+  window.location.href = "main.html";
 };
 
 // ---------- Update index.html unread count ----------

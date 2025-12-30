@@ -195,12 +195,12 @@ if (file.type.startsWith("video")) {
       uploadStatus.innerText = "Uploaded Successfully ✔️";
       uploadStatus.style.color = "black";
 
-      setTimeout(() => window.location.href = "index.html", 1500);
+      setTimeout(() => window.location.href = "main.html", 1500);
     });
   });
 
   // Navigation
-  document.getElementById("btnHome")?.addEventListener("click", () => window.location.href = "index.html");
+  document.getElementById("btnHome")?.addEventListener("click", () => window.location.href = "main.html");
   document.getElementById("btnSearch")?.addEventListener("click", () => window.location.href = "search.html");
   document.getElementById("btnNotifs")?.addEventListener("click", () => window.location.href = "notification.html");
   document.getElementById("btnProfile")?.addEventListener("click", () => window.location.href = "profile.html");

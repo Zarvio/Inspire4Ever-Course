@@ -124,7 +124,7 @@ div.innerHTML = `
 // ----------------------
 // NAVIGATION
 // ----------------------
-document.getElementById("btnHome").addEventListener("click", () => window.location.href = "index.html");
+document.getElementById("btnHome").addEventListener("click", () => window.location.href = "main.html");
 document.getElementById("btnSearch").addEventListener("click", () => window.location.href = "search.html");
 document.getElementById("btnNotifs").addEventListener("click", () => window.location.href = "notification.html");
 document.getElementById("btnProfile").addEventListener("click", () => window.location.href = "profile.html");

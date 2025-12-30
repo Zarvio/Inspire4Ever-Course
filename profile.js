@@ -48,7 +48,7 @@ const cancelDeleteBtn = document.getElementById("cancelDelete");
 
 
 // --- Navigation redirects (same as your original) ---
-document.getElementById("btnHome").addEventListener("click", () => window.location.href = "index.html");
+document.getElementById("btnHome").addEventListener("click", () => window.location.href = "main.html");
 document.getElementById("btnSearch").addEventListener("click", () => window.location.href = "search.html");
 document.getElementById("btnNotifs").addEventListener("click", () => window.location.href = "notification.html");
 document.getElementById("btnProfile").addEventListener("click", () => window.location.href = "profile.html");
@@ -781,7 +781,7 @@ logoutBtn?.addEventListener("click", () => {
   firebase.auth().signOut()
     .then(() => {
       // Logout successful → redirect to login page
-      window.location.href = "index.html";
+      window.location.href = "main.html";
     })
     .catch(err => {
       console.error("Logout failed:", err);
