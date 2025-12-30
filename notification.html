@@ -16,6 +16,13 @@
         <div class="profile-icon"></div>
     </header>
 
+    <div class="notif-loader" style="display:flex; justify-content:center; align-items:center; height:100px;">
+  <div class="spinner"></div>
+</div>
+
+<div class="notif-container"></div>
+
+
     <!-- MAIN CONTENT -->
     <main class="main-content">
         <div class="notif-container">
@@ -51,6 +58,17 @@
         </a>
     </nav>
 
-    <script src="notification.js"></script>
+    <!-- Firebase App (core) SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+
+<!-- Firebase Realtime Database -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+<!-- Firebase Auth -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
+<!-- Your notification.js -->
+<script src="notification.js"></script>
+
 </body>
 </html>

@@ -4,66 +4,86 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Upload - Pinora</title>
-    
     <link rel="stylesheet" href="upload.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
+<!-- TensorFlow.js -->
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.9.0/dist/tf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd"></script>
 
 <body>
 
-    <!-- HEADER -->
-    <header class="top-header">
-        <h1 class="logo">Pinora</h1>
-        <div class="profile-icon"></div>
-    </header>
+<div id="uploadPopup" class="upload-popup hidden">
+  <div class="popup-box">
+    <p id="uploadStatus">Uploading...</p>
 
-    <!-- MAIN CONTENT -->
-    <main class="main-content">
-        <h2 class="welcome">Upload your Pins here</h2>
-<form id="uploadForm">
-    <input type="text" placeholder="Title" id="pinTitle" required>
-    
-    <!-- IMAGE/VIDEO FILE INPUT (IMPORTANT) -->
-    <input type="file" id="pinFile" accept="image/*,video/*" required>
-
-    <button type="submit">Upload</button>
-</form>
+    <div class="progress-bar">
+      <div id="progressFill"></div>
+    </div>
+  </div>
+</div>
 
 
-<!-- SUPABASE JS CDN ADD KARO -->
+
+<header class="top-header">
+    <h1 class="logo">Pinora</h1>
+</header>
+
+<main class="main-content">
+    <h2 class="welcome">Upload your Pins here</h2>
+    <form id="uploadForm">
+        
+  <input type="file" id="pinFile" accept="image/*,video/*" hidden>
+
+<button type="button" id="selectFileBtn" class="select-btn">
+  Select Image / Video
+</button>
+
+<p id="fileName" style="font-size:12px;color:#555;"></p>
+<input type="text" placeholder="Title" id="pinTitle" required>
+<p id="detectedTags" style="font-size:12px;color:#555;"></p> <!-- <-- add this line -->
+<button type="submit">Upload</button>
+
+    </form>
+    <div id="previewBox" style="margin-top:15px;"></div>
+</main>
+
+<nav class="bottom-nav">
+    <a class="nav-item" id="btnHome"><i class="fa-solid fa-house"></i><span>Home</span></a>
+    <a class="nav-item" id="btnSearch"><i class="fa-solid fa-magnifying-glass"></i><span>Search</span></a>
+    <a class="nav-item active" id="btnUpload"><i class="fa-solid fa-plus"></i><span>Upload</span></a>
+    <a class="nav-item" id="btnNotifs"><i class="fa-regular fa-bell"></i><span>Notification</span></a>
+    <a class="nav-item" id="btnProfile"><i class="fa-regular fa-circle-user"></i><span>Profile</span></a>
+</nav>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="upload.js"></script>
+<!-- 1. Firebase Core -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 
-    </main>
+<!-- 2. Firebase Auth -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
 
-    <!-- BOTTOM NAV -->
-    <nav class="bottom-nav">
-        <a class="nav-item" id="btnHome">
-            <i class="fa-solid fa-house"></i>
-            <span>Home</span>
-        </a>
+<!-- 3. Firebase Database -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
-        <a class="nav-item" id="btnSearch">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <span>Search</span>
-        </a>
 
-        <a class="nav-item active" id="btnUpload">
-            <i class="fa-solid fa-plus"></i>
-            <span>Upload</span>
-        </a>
 
-        <a class="nav-item" id="btnNotifs">
-            <i class="fa-regular fa-bell"></i>
-            <span>Notification</span>
-        </a>
+<!-- 4. Firebase Initialize -->
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyDUefeJbHKIAs-l3zvFlGaas6VD63vv4kI",
+    authDomain: "inspire4ever-c60ad.firebaseapp.com",
+    databaseURL: "https://inspire4ever-c60ad-default-rtdb.firebaseio.com",
+    projectId: "inspire4ever-c60ad",
+    storageBucket: "inspire4ever-c60ad.appspot.com",
+    messagingSenderId: "771054326516",
+    appId: "1:771054326516:web:69fd1989229b25a8796380"
+  };
+  firebase.initializeApp(firebaseConfig);
+</script>
 
-        <a class="nav-item" id="btnProfile">
-            <i class="fa-regular fa-circle-user"></i>
-            <span>Profile</span>
-        </a>
-    </nav>
 
-    <script src="upload.js"></script>
+
 </body>
 </html>

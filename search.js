@@ -125,100 +125,71 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
-const searchVideoInput = document.getElementById("searchVideoInput");
-const searchUserInput = document.getElementById("searchInput");
-const suggestionsBox = document.getElementById("userSuggestions");
+document.addEventListener("DOMContentLoaded", async () => {
 
+    const searchInput = document.getElementById("searchInput");
+    const suggestionsBox = document.getElementById("userSuggestions");
 
-searchVideoInput.addEventListener("input", () => {
-    let val = searchVideoInput.value.toLowerCase();
+    // Username search
+    searchInput.addEventListener("input", async () => {
+        let text = searchInput.value.trim().toLowerCase();
 
-    if (val === "") {
-        loadVideos();
-        return;
-    }
+        if (text.length === 0) {
+            suggestionsBox.classList.add("hidden");
+            return;
+        }
 
-    let filtered = sampleVideos.filter(v => v.toLowerCase().includes(val));
-    loadVideos(filtered);
-});
+        let snap = await firebase.database().ref("users").once("value");
+        let results = [];
 
+        snap.forEach(user => {
+            let u = user.val();
+            if (u.username && u.username.toLowerCase().includes(text)) {
+                results.push({
+                    uid: user.key,
+                    username: u.username,
+                    name: (u.name || "") + " " + (u.surname || ""),
+                    photo: u.photoURL || "default.jpg",
+                    verified: u.verified || false
+                });
+            }
+        });
 
-searchUserInput.addEventListener("input", async () => {
-    let text = searchUserInput.value.trim().toLowerCase();
+        showSuggestions(results);
+    });
 
-    if (text.length === 0) {
-        suggestionsBox.classList.add("hidden");
-        return;
-    }
+    function showSuggestions(list) {
+        suggestionsBox.innerHTML = "";
+        if (list.length === 0) {
+            suggestionsBox.innerHTML = "<p style='padding:10px;color:#666'>No users found</p>";
+        } else {
+            list.forEach(user => {
+                let div = document.createElement("div");
+                div.className = "suggestion-item";
 
-    let snap = await firebase.database().ref("users").once("value");
+                div.innerHTML = `
+                    <img src="${user.photo}" class="suggestion-photo">
+                    <div class="suggestion-info">
+                        <span class="suggestion-username" style="display:flex;align-items:center;gap:4px;">
+                            @${user.username} ${user.verified ? '<img src="https://upload.wikimedia.org/wikipedia/commons/e/e4/Twitter_Verified_Badge.svg" style="width:14px;height:14px;">' : ''}
+                        </span>
+                        <span class="suggestion-name">${user.name}</span>
+                    </div>
+                `;
 
-    let results = [];
+                div.onclick = () => {
+                    window.location.href = "user.html?uid=" + user.uid;
+                };
 
-    snap.forEach(user => {
-        let u = user.val();
-
-        if (u.username && u.username.toLowerCase().includes(text)) {
-            results.push({
-                uid: user.key,
-                username: u.username,
-                name: (u.name || "") + " " + (u.surname || ""),
-                photo: u.photoURL || "default.jpg",
-                verified: u.verified || false   // ✅ add verified flag
+                suggestionsBox.appendChild(div);
             });
         }
-    });
 
-    showSuggestions(results);
-});
-
-  
-
-function showSuggestions(list) {
-    if (list.length === 0) {
-        suggestionsBox.innerHTML = "<p style='padding:10px;color:#666'>No users found</p>";
         suggestionsBox.classList.remove("hidden");
-        return;
     }
 
-    suggestionsBox.innerHTML = "";
+});
 
-    list.forEach(user => {
-        let div = document.createElement("div");
-        div.className = "suggestion-item";
-
-        // ✅ Verified badge logic added
-div.innerHTML = `
-    <img src="${user.photo}" class="suggestion-photo">
-
-    <div class="suggestion-info">
-
-        <span class="suggestion-username" style="
-            display:flex;
-            align-items:center;
-            gap:4px;
-        ">
-            @${user.username}
-            ${user.verified ? 
-                '<img src="https://upload.wikimedia.org/wikipedia/commons/e/e4/Twitter_Verified_Badge.svg" style="width:14px;height:14px;">' 
-                : ''
-            }
-        </span>
-
-        <span class="suggestion-name">${user.name}</span>
-    </div>
-`;
-
-
-        div.onclick = () => {
-            window.location.href = "user.html?uid=" + user.uid;
-        };
-
-        suggestionsBox.appendChild(div);
-    });
-
-    suggestionsBox.classList.remove("hidden");
-}
 
 
 

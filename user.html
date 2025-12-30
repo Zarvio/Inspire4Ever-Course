@@ -10,20 +10,51 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+
 </head>
+
 <body>
   <div id="loaderOverlay" class="loader-overlay">Loading...</div>
 
-  <div id="profileView" class="profile-container hidden">
-    <img id="profilePic" class="profile-pic" src="default.jpg" alt="Profile Picture">
-    <h2 id="displayName"></h2>
-    <p id="displayUsername"></p>
-    <div class="follow-info">
-      <span>Followers: <span id="followersCount">0</span></span>
-      <span>Following: <span id="followingCount">0</span></span>
-    </div>
-    <button id="followBtn">Follow</button>
+
+  <!-- Followers / Following Modal -->
+<div id="followersModal" class="hidden modal-overlay">
+  <div class="modal-content">
+    <span id="closeFollowers" class="close-btn">❌</span>
+    <h3>Followers</h3>
+    <div id="followersList"></div>
   </div>
+</div>
+  <div id="profileView" class="profile-container hidden">
+  <img id="profilePic" class="profile-pic" src="default.jpg" alt="Profile Picture">
+  <h2 id="displayName"></h2>
+  <p id="displayUsername"></p>
+  <p id="displayBio" style="text-align:center; font-size:13px; opacity:.8;"></p>
+
+  <div class="follow-info counts">
+    <div id="followersBtn" class="count-btn">
+      <span id="followersCount">0</span>
+      <span class="lbl">followers</span>
+    </div>
+
+    <div id="followingBtn" class="count-btn">
+      <span id="followingCount">0</span>
+      <span class="lbl">following</span>
+    </div>
+  </div>
+
+  <button id="followBtn">Follow</button>
+  <button id="messageBtn" class="msg-btn">Message</button>
+</div>
+
+<div id="userVideosSection" style="display:none;">
+  <h3>User Videos</h3>
+  <div id="userVideos">
+    <p class="empty-text">Loading videos...</p>
+  </div>
+</div>
+
+
 
 
 <nav class="bottom-nav">
@@ -54,7 +85,10 @@
 </nav>
 
 
-
+<div id="userVideos" class="videos-container">
+  <p class="empty-text"></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="user.js"></script>
 </body>
 </html>

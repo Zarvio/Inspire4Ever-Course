@@ -1,0 +1,39 @@
+body {
+  background: #0f0f0f;
+  color: white;
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.admin-box {
+  background: #1c1c1c;
+  padding: 25px;
+  width: 320px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.admin-box h2 {
+  margin-bottom: 10px;
+}
+
+.admin-box input {
+  width: 100%;
+  padding: 10px;
+  margin: 12px 0;
+  border-radius: 8px;
+  border: none;
+}
+
+.admin-box button {
+  width: 100%;
+  padding: 10px;
+  background: red;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}

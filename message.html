@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Messages - Pinora</title>
+
+  <link rel="stylesheet" href="message.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Firebase -->
+   
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+  
+</head>
+<body>
+
+<div class="app">
+
+  <!-- Chat List -->
+<div id="chatListScreen" class="screen">
+  
+  <div class="header">
+    <button id="listBackBtn">←</button>
+    Messages
+  </div>
+  
+  <div id="chatList" class="chat-list"></div>
+
+</div>
+
+
+  <!-- Chat Screen -->
+  <div id="chatScreen" class="screen chat-screen hidden">
+    
+    <div class="chat-header">
+  <button id="backBtn">←</button>
+
+  <!-- Sirf ye part clickable hoga -->
+  <div id="chatUserInfo">
+    <img id="chatUserImg" src="default.jpg">
+    <span id="chatUserName">Chat</span>
+  </div>
+</div>
+
+
+
+    <div id="chatBox" class="chat-box"></div>
+<div id="typingIndicator" style="font-size:12px; color:#555; margin:5px 10px;"></div>
+    <div class="chat-input">
+     
+    <input type="file" id="imgInput" accept="image/*" style="display:none;">
+<button id="imgBtn"><i class="fa-solid fa-paperclip"></i></button>
+ <input type="text" id="msgInput" placeholder="Type a message..." />
+      <button id="sendBtn"><i class="fa-solid fa-paper-plane"></i></button>
+    </div>
+
+  </div>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="message.js"></script>
+<!-- Fullscreen image overlay -->
+<div id="imgOverlay">
+  <img src="" id="overlayImg">
+</div>
+
+</body>
+</html>
