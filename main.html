@@ -22,6 +22,30 @@
         <button id="closeWelcomeBtn">Get Started</button>
     </div>
 </div>
+<div id="rewardPopup" class="reward-popup hidden">
+  <div class="reward-box">
+    <h2>🎉 Congratulations!</h2>
+    <p>You earned <b>15 coins</b> for uploading your video.</p>
+    <button id="closeRewardPopup">Awesome!</button>
+  </div>
+</div>
+<!-- LOGIN REQUIRED POPUP -->
+<div id="loginPopup" class="reward-popup hidden">
+  <div class="reward-box">
+    <h2>🔐 Login Required</h2>
+    <p>Please login first and then download video.</p>
+    <button onclick="closeLoginPopup()">OK</button>
+  </div>
+</div>
+
+<!-- NO COINS POPUP -->
+<div id="noCoinsPopup" class="reward-popup hidden">
+  <div class="reward-box">
+    <h2>❌ No Coins</h2>
+    <p>You don’t have enough coins.<br><b>Upload video & get 15 coins!</b></p>
+    <button onclick="closeNoCoinsPopup()">Upload Now</button>
+  </div>
+</div>
 
 <style>
 /* Welcome Popup Styles */
@@ -111,6 +135,11 @@ document.getElementById('closeWelcomeBtn').addEventListener('click', () => {
 <!-- HEADER -->
 <header class="top-header">
     <div class="logo">Pinora</div>
+    <div class="credit-box" id="creditBox">
+    <i class="fa-solid fa-coins"></i>
+    <span id="creditText">...</span>
+</div>
+
 </header>
 
 <!-- Message Icon -->

@@ -60,12 +60,18 @@
 
   <div class="page">
 
-    <!-- Header (small) -->
     <header class="header">
-      <div class="left"></div>
-      <div class="title">Profile</div>
-      <div class="right"></div>
-    </header>
+  <div class="left"></div>
+
+  <div class="title">Profile</div>
+
+  <div class="right">
+    <button id="menuBtn" class="menu-btn">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+  </div>
+</header>
+
 
     <main class="container">
 
@@ -117,7 +123,31 @@
   </div>
 
 
+<!-- SIDE MENU -->
+<div id="sideMenu" class="side-menu hidden">
+  <div class="side-header">
+    <h3>Menu</h3>
+    <button id="closeMenu"><i class="fa-solid fa-xmark"></i></button>
+  </div>
 
+ <ul class="side-links">
+  <li id="helpLink"><i class="fa-solid fa-circle-info"></i> Help Center</li>
+  <li id="settingsLink"><i class="fa-solid fa-gear"></i> Settings</li>
+  <li id="privacyLink"><i class="fa-solid fa-shield"></i> Privacy Policy</li>
+  <li id="contactLink"><i class="fa-solid fa-envelope"></i> Contact Us</li>
+</ul>
+
+</div>
+
+<!-- Overlay -->
+<div id="menuOverlay" class="menu-overlay hidden"></div>
+
+<div id="infoPopup" class="popup hidden">
+  <div class="popup-box">
+    <span id="closeInfoPopup" class="close-btn"><i class="fa-solid fa-circle-xmark"></i></span>
+    <div id="popupContent"></div>
+  </div>
+</div>
 
       <!-- DONE / PROFILE PAGE -->
       <section id="profileView" class="card hidden profile-card">

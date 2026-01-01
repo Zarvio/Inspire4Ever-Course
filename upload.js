@@ -15,6 +15,19 @@ document.addEventListener("DOMContentLoaded", () => {
   const progressFill = document.getElementById("progressFill");
   const uploadStatus = document.getElementById("uploadStatus");
 
+
+  async function addUploadCoins() {
+    const user = firebase.auth().currentUser;
+    if (!user) return;
+
+    const ref = firebase.database().ref(`userCoins/${user.uid}`);
+
+    await ref.transaction(c => {
+        c = Number(c || 0);
+        return c + 15;
+    });
+}
+
   // Open file selector
   selectBtn.addEventListener("click", () => fileInput.click());
 
@@ -194,6 +207,8 @@ if (file.type.startsWith("video")) {
 
       uploadStatus.innerText = "Uploaded Successfully ✔️";
       uploadStatus.style.color = "black";
+      await addUploadCoins(); // 🪙 +15 coins on upload
+      localStorage.setItem("uploadReward", "15");
 
       setTimeout(() => window.location.href = "main.html", 1500);
     });

@@ -443,7 +443,7 @@ if (uploaderDiv) {
             let media;
             if (post.file_type.startsWith("video") && isMobile) {
                 media = document.createElement("img");
-                media.src = post.thumb_url || "images/default.jpg";
+                media.src = post.thumb_url || "default.jpg";
             } else if (post.file_type.startsWith("video")) {
                 media = document.createElement("video");
                 media.src = post.file_url;
@@ -559,96 +559,89 @@ function getSmartRelated(currentPost, allPosts) {
   return [...aiMatches, ...titleMatches];
 }
 
-const finalRelated = getSmartRelated(post, allPosts);
-
-
-// CLEAR RELATED VIDEOS CONTAINER
-relatedVideos.innerHTML = "";
-
-// LOOP THROUGH finalRelated
-finalRelated.forEach(other => {
-
-    // CREATE WRAP DIV
+// ----------------------
+// Related video box create karne ka function
+// ----------------------
+function createRelatedVideoBox(post) {
     const wrap = document.createElement("div");
     wrap.className = "relatedBox";
 
-    // CHECK VERIFIED
-    const relatedVerified =
-        other.uploader_verified === true ||
-        other.uploader_verified === 'true' ||
-        other.uploader_verified === 1 ||
-        other.uploader_verified === '1';
+    const verified = post.uploader_verified === true ||
+                     post.uploader_verified === "true" ||
+                     post.uploader_verified === 1 ||
+                     post.uploader_verified === "1";
 
-    const relatedBadgeHTML = relatedVerified
+    const badgeHTML = verified
         ? `<img src="https://upload.wikimedia.org/wikipedia/commons/e/e4/Twitter_Verified_Badge.svg"
-             style="width:12px; height:12px; margin-left:4px;">`
+               style="width:12px; height:12px; margin-left:4px;">`
         : '';
 
-    // INNER HTML
     wrap.innerHTML = `
         <div class="relatedThumb">
-            <img src="${other.thumb_url || other.file_url || 'default_thumb.jpg'}" class="relatedVideoThumb">
+            <img src="${post.thumb_url || post.file_url || 'default_thumb.jpg'}" class="relatedVideoThumb">
             <div class="uploaderHeaderSmall">
-                <img src="${other.uploader_image ? other.uploader_image + '?t=' + Date.now() : 'default.jpg'}" class="smallDP">
-                <span class="smallName">${other.uploader_name || "User"}</span>
-                ${relatedBadgeHTML}
+                <img src="${post.uploader_image || 'default.jpg'}" class="smallDP">
+                <span class="smallName">${post.uploader_name || "User"}</span>
+                ${badgeHTML}
             </div>
         </div>
     `;
 
-    // UPLOADER CLICK → USER PAGE
+    // Uploader click → user page
     const uploaderSmall = wrap.querySelector(".uploaderHeaderSmall");
     if (uploaderSmall) {
         uploaderSmall.style.cursor = "pointer";
         uploaderSmall.addEventListener("click", (e) => {
-            e.stopPropagation(); // Prevent modal open
-            if (other.uploader_uid) {
-                window.location.href = `user.html?uid=${other.uploader_uid}`;
+            e.stopPropagation();
+            if (post.uploader_uid) {
+                window.location.href = `user.html?uid=${post.uploader_uid}`;
             }
         });
     }
 
-    // WRAP CLICK → OPEN MODAL
+    // Video click → modal update
     wrap.addEventListener("click", () => {
-        currentPostId = other.id;
+        currentPostId = post.id;
         updateCommentCount();
-        loadLikes(other.id);
+        loadLikes(post.id);
 
-        if (other.file_type.startsWith("video")) {
-            modalVideo.src = other.file_url;
+        if (post.file_type.startsWith("video")) {
+            modalVideo.src = post.file_url;
             modalVideo.style.display = "block";
             modalImage.style.display = "none";
         } else {
-            modalImage.src = other.file_url;
+            modalImage.src = post.file_url;
             modalImage.style.display = "block";
             modalVideo.style.display = "none";
         }
 
+        // Modal title
         modalTitle.innerHTML = `
-            ${other.title || ""}
+            ${post.title || ""}
             <div class="modalUploader" style="display:flex; align-items:center; gap:5px;">
-                <img src="${other.uploader_image || 'images/default.jpg'}" class="modalUploaderDP">
-                <span>${other.uploader_name || "Unknown"}</span>
-                ${relatedBadgeHTML}
+                <img src="${post.uploader_image || 'default.jpg'}" class="modalUploaderDP">
+                <span>${post.uploader_name || "Unknown"}</span>
+                ${badgeHTML}
             </div>
         `;
-const modalUploader = modalTitle.querySelector(".modalUploader");
-if (modalUploader) {
-    modalUploader.style.cursor = "pointer";
-    modalUploader.addEventListener("click", (e) => {
-        e.stopPropagation();   // ❗ modal click se conflict na ho
-        if (other.uploader_uid) {
-            window.location.href = `user.html?uid=${other.uploader_uid}`;
-        }
-    });
-}
+
+        // ✅ Naya related videos calculate karo
+        const newRelated = getSmartRelated(post, allPosts);
+        relatedVideos.innerHTML = ""; // purane clear karo
+        newRelated.forEach(r => createRelatedVideoBox(r)); // nayi related videos add karo
 
         modal.classList.remove("hidden");
     });
 
-    // APPEND WRAP ONCE
     relatedVideos.appendChild(wrap);
-});
+}
+
+// ----------------------
+// Main video click ya first modal open ke liye related videos
+// ----------------------
+const finalRelated = getSmartRelated(post, allPosts);
+relatedVideos.innerHTML = ""; // purane clear karo
+finalRelated.forEach(r => createRelatedVideoBox(r));
 
 
 
@@ -757,6 +750,7 @@ if (modalUploader) {
     document.getElementById("btnProfile")?.addEventListener("click", () => location.href = "profile.html");
     document.getElementById("btnUpload")?.addEventListener("click", () => location.href = "upload.html");
      document.getElementById("btnmessage")?.addEventListener("click", () => location.href = "message.html");
+      document.getElementById("btnNotifs")?.addEventListener("click", () => location.href = "notification.html");
 
      function applyFilters() {
 
@@ -995,7 +989,7 @@ const fetchRelatedVideosSupabase = async (currentVideoId) => {
       if (video.id === currentVideoId) return; // skip current
 
       const card = template.content.cloneNode(true);
-      card.querySelector(".smallDP").src = video.uploader_image || "images/default.jpg";
+      card.querySelector(".smallDP").src = video.uploader_image || "default.jpg";
       card.querySelector(".smallName").textContent = video.uploader_name || "Unknown";
       card.querySelector(".relatedThumb").src = video.thumb_url || video.file_url;
 
@@ -1014,7 +1008,7 @@ const fetchRelatedVideosSupabase = async (currentVideoId) => {
         modalTitle.innerHTML = `
           ${video.title || ""}
           <div class="modalUploader">
-            <img src="${video.uploader_image || 'images/default.jpg'}" class="modalUploaderDP">
+            <img src="${video.uploader_image || 'default.jpg'}" class="modalUploaderDP">
             <span>${video.uploader_name || "Unknown"}</span>
           </div>
         `;
@@ -1267,7 +1261,7 @@ async function sendComment() {
 
     const uid = user.uid;
     const username = user.displayName || "Anonymous";
-    const profileImage = user.photoURL || "images/default.jpg";
+    const profileImage = user.photoURL || "default.jpg";
 
     const commentRef = firebase.database().ref(`videoComments/${currentPostId}`).push();
     await commentRef.set({
@@ -1446,7 +1440,7 @@ window.addEventListener("DOMContentLoaded", async () => {
         modalTitle.innerHTML = `
             ${post.title || ""}
             <div class="modalUploader" style="display:flex; align-items:center; gap:5px;">
-                <img src="${post.uploader_image || 'images/default.jpg'}" class="modalUploaderDP">
+                <img src="${post.uploader_image || 'default.jpg'}" class="modalUploaderDP">
                 <span>${post.uploader_name || "Unknown"}</span>
                 ${badgeHTML}
             </div>
@@ -1499,7 +1493,7 @@ window.addEventListener("DOMContentLoaded", async () => {
         modalTitle.innerHTML = `
             ${post.title || ""}
             <div class="modalUploader" style="display:flex; align-items:center; gap:5px;">
-                <img src="${post.uploader_image || 'images/default.jpg'}" class="modalUploaderDP">
+                <img src="${post.uploader_image || 'default.jpg'}" class="modalUploaderDP">
                 <span>${post.uploader_name || "Unknown"}</span>
                 ${badgeHTML}
             </div>
@@ -1530,10 +1524,29 @@ const progressCircleFill = document.getElementById("progressCircleFill");
 const progressPercent = document.getElementById("progressPercent");
 
 downloadBtn.addEventListener("click", async () => {
+
     if (!currentPostId) return;
 
+    const user = firebase.auth().currentUser;
+
+    // ❌ Guest user
+    if (!user) {
+        document.getElementById("loginPopup").classList.remove("hidden");
+        return;
+    }
+
+    const coins = await getUserCoins();
+
+    // ❌ Not enough coins
+    if (coins < 5) {
+        document.getElementById("noCoinsPopup").classList.remove("hidden");
+        return;
+    }
+
+    // 🪙 Cut 5 coins first
+    await updateUserCoins(-5);
+
     try {
-        // Supabase se title & URL fetch
         const { data: post, error } = await supabaseClient
             .from("pinora823")
             .select("title, file_url")
@@ -1547,12 +1560,10 @@ downloadBtn.addEventListener("click", async () => {
         titleText = titleText.replace(/[\\/:"*?<>|]+/g, '');
         const fileName = `${titleText} - Pinora Web.mp4`;
 
-        // Show overlay
         progressOverlay.style.display = "flex";
         progressPercent.textContent = "0%";
         progressCircleFill.style.strokeDashoffset = 226.2;
 
-        // Fetch video as stream
         const response = await fetch(videoUrl);
         const reader = response.body.getReader();
         const contentLength = +response.headers.get("Content-Length");
@@ -1560,21 +1571,19 @@ downloadBtn.addEventListener("click", async () => {
         let receivedLength = 0;
         const chunks = [];
 
-        while(true) {
+        while(true){
             const { done, value } = await reader.read();
-            if (done) break;
+            if(done) break;
 
             chunks.push(value);
             receivedLength += value.length;
 
-            // Update circular progress
             const progress = (receivedLength / contentLength) * 100;
             const offset = 226.2 * (1 - progress / 100);
             progressCircleFill.style.strokeDashoffset = offset;
             progressPercent.textContent = `${progress.toFixed(0)}%`;
         }
 
-        // Create blob & trigger download
         const blob = new Blob(chunks);
         const blobUrl = URL.createObjectURL(blob);
 
@@ -1587,16 +1596,16 @@ downloadBtn.addEventListener("click", async () => {
 
         URL.revokeObjectURL(blobUrl);
 
-        // Hide overlay after short delay
         setTimeout(() => {
             progressOverlay.style.display = "none";
         }, 800);
 
-    } catch (err) {
+    } catch(err){
         console.error("Download failed:", err);
-        progressOverlay.style.display = "none"; // hide on error
+        progressOverlay.style.display = "none";
     }
 });
+
 firebase.auth().onAuthStateChanged(user => {
   if (!user) return;
 
@@ -1625,4 +1634,99 @@ function showFlagPopup() {
 
 function closeFlagPopup() {
   document.getElementById("flagPopup").classList.add("hidden");
+}
+// ===============================
+// 🪙 LOGIN BASED COIN SYSTEM (WITH LOADING ...)
+// ===============================
+const creditText = document.getElementById("creditText");
+const creditBox = document.getElementById("creditBox");
+
+// default loading
+if (creditText) creditText.innerText = "...";
+
+function userCoinRef(uid){
+    return firebase.database().ref(`userCoins/${uid}`);
+}
+
+firebase.auth().onAuthStateChanged(async user => {
+
+    if (!creditText || !creditBox) return;
+
+    // ⏳ jab tak auth check ho raha hai – keep "..."
+    creditText.innerText = "...";
+
+    // thoda delay smooth feel ke liye
+    setTimeout(async () => {
+
+        if (!user) {
+            creditText.innerText = "Please login";
+            creditBox.classList.add("guest");
+            return;
+        }
+
+        creditBox.classList.remove("guest");
+
+        const ref = userCoinRef(user.uid);
+        const snap = await ref.once("value");
+
+        // 🆕 first time login
+        if (!snap.exists()) {
+            await ref.set(40);
+            creditText.innerText = "40";
+        } else {
+            creditText.innerText = snap.val();
+        }
+
+        // 🔁 realtime update
+        ref.on("value", s => {
+            if (s.exists()) creditText.innerText = s.val();
+        });
+
+    }, 600); // smooth loading dots time
+});
+
+// update coins function
+async function updateUserCoins(amount){
+    const user = firebase.auth().currentUser;
+    if (!user) return;
+
+    const ref = userCoinRef(user.uid);
+
+    await ref.transaction(c => {
+        c = Number(c || 0);
+        c += amount;
+        if (c < 0) c = 0;
+        return c;
+    });
+}
+// 🎉 Show reward popup after upload
+window.addEventListener("load", () => {
+    const reward = localStorage.getItem("uploadReward");
+
+    if (reward) {
+        const popup = document.getElementById("rewardPopup");
+        const closeBtn = document.getElementById("closeRewardPopup");
+
+        popup.classList.remove("hidden");
+
+        closeBtn.onclick = () => {
+            popup.classList.add("hidden");
+            localStorage.removeItem("uploadReward");
+        };
+    }
+});
+function closeLoginPopup(){
+  document.getElementById("loginPopup").classList.add("hidden");
+}
+
+function closeNoCoinsPopup(){
+  document.getElementById("noCoinsPopup").classList.add("hidden");
+  window.location.href = "upload.html";
+}
+async function getUserCoins(){
+  const user = firebase.auth().currentUser;
+  if (!user) return null;
+
+  const snap = await firebase.database().ref(`userCoins/${user.uid}`).once("value");
+  return Number(snap.val() || 0);
 }

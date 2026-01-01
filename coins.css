@@ -1,0 +1,152 @@
+/* Reset basic styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Body styling */
+body {
+  background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+/* Admin panel container */
+.admin-coin-panel {
+  background: #ffffff;
+  padding: 30px 40px;
+  border-radius: 20px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.admin-coin-panel:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+}
+
+/* Heading */
+.admin-coin-panel h2 {
+  margin-bottom: 20px;
+  font-size: 26px;
+  color: #333;
+}
+
+/* Inputs styling */
+.admin-coin-panel input[type="text"],
+.admin-coin-panel input[type="number"] {
+  width: 100%;
+  padding: 15px 20px;
+  margin: 10px 0;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  font-size: 18px;
+  transition: border 0.3s;
+}
+
+.admin-coin-panel input[type="text"]:focus,
+.admin-coin-panel input[type="number"]:focus {
+  border-color: #6c63ff;
+  outline: none;
+}
+
+/* Buttons styling */
+.admin-coin-panel button {
+  width: 100%;
+  padding: 15px 0;
+  margin: 10px 0;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 18px;
+  transition: background 0.3s, transform 0.2s;
+  color: #fff;
+}
+
+#findUserBtn {
+  background: #6c63ff;
+}
+
+#findUserBtn:hover {
+  background: #574fd6;
+}
+
+#addCoinsBtn {
+  background: #28a745;
+}
+
+#addCoinsBtn:hover {
+  background: #218838;
+}
+
+#removeCoinsBtn {
+  background: #dc3545;
+}
+
+#removeCoinsBtn:hover {
+  background: #c82333;
+}
+
+/* Coin actions container */
+.coin-actions {
+  margin-top: 20px;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Current coins info */
+#currentCoins {
+  font-size: 22px;
+  margin: 10px 0;
+  color: #555;
+}
+
+/* Found user info */
+#foundUserInfo {
+  font-size: 18px;
+  margin-top: 10px;
+  color: #333;
+  word-wrap: break-word;
+}
+
+/* Responsive adjustments */
+@media (max-width: 500px) {
+  .admin-coin-panel {
+    padding: 25px 20px;
+    width: 100%;
+  }
+
+  .admin-coin-panel h2 {
+    font-size: 24px;
+  }
+
+  .admin-coin-panel input[type="text"],
+  .admin-coin-panel input[type="number"] {
+    font-size: 16px;
+    padding: 12px 15px;
+  }
+
+  .admin-coin-panel button {
+    font-size: 16px;
+    padding: 12px 0;
+  }
+
+  #currentCoins {
+    font-size: 20px;
+  }
+
+  #foundUserInfo {
+    font-size: 16px;
+  }
+}

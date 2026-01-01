@@ -978,3 +978,87 @@ followingBtn.addEventListener("click", async () => {
     followersList.appendChild(div);
   }
 });
+const menuBtn = document.getElementById("menuBtn");
+const sideMenu = document.getElementById("sideMenu");
+const closeMenu = document.getElementById("closeMenu");
+const menuOverlay = document.getElementById("menuOverlay");
+
+menuBtn.onclick = () => {
+  sideMenu.classList.remove("hidden");   // 🔥 ye line missing thi
+  sideMenu.classList.add("show");
+  menuOverlay.classList.remove("hidden");
+};
+
+closeMenu.onclick = closeSideMenu;
+menuOverlay.onclick = closeSideMenu;
+
+function closeSideMenu() {
+  sideMenu.classList.remove("show");
+  sideMenu.classList.add("hidden");     // 🔥 wapas hide
+  menuOverlay.classList.add("hidden");
+}
+const helpLink = document.getElementById("helpLink");
+const privacyLink = document.getElementById("privacyLink");
+const contactLink = document.getElementById("contactLink");
+const settingsLink = document.getElementById("settingsLink");
+
+const infoPopup = document.getElementById("infoPopup");
+const popupContent = document.getElementById("popupContent");
+const closeInfoPopup = document.getElementById("closeInfoPopup");
+
+// Help link
+helpLink.addEventListener("click", () => {
+  popupContent.innerHTML = `
+    <h3>Help Center (Help & Support)</h3>
+    <p>❓ Frequently Asked Questions</p>
+    <ol>
+      <li><b>Do I need to login to use the app?</b> No. You can browse content without logging in. Login is only required to upload videos or follow creators.</li>
+      <li><b>How do I create or edit my profile?</b> Go to Profile → Edit Profile. Update photo, username, and bio.</li>
+      <li><b>I forgot my login / can’t sign in</b> Try logging in again using Google. If the issue continues, contact our support team.</li>
+      <li><b>How do I report a problem or bug?</b> Open menu → Contact Us → Send issue with screenshots (if possible).</li>
+    </ol>
+  `;
+  infoPopup.classList.remove("hidden");
+});
+
+// Privacy link
+privacyLink.addEventListener("click", () => {
+  popupContent.innerHTML = `
+    <h3>Privacy Policy</h3>
+    <p>Your privacy matters to us.</p>
+    <ul>
+      <li>We only collect necessary info like name, email, profile photo.</li>
+      <li>Your data is never sold to third parties.</li>
+      <li>Uploaded content is public; private info stays secure.</li>
+      <li>Secure services used: Google auth, cloud storage.</li>
+      <li>You can update or delete profile anytime.</li>
+    </ul>
+    <p>📅 Last updated: January 2026</p>
+  `;
+  infoPopup.classList.remove("hidden");
+});
+
+// Contact link
+contactLink.addEventListener("click", () => {
+  popupContent.innerHTML = `
+    <h3>Contact Us </h3>
+    <p>Have a question, feedback, or facing an issue? You can contact us via:</p>
+    <ul style="margin-top:10px; padding-left: 20px;">
+      <li><i class="fa-solid fa-envelope"></i> Email: <a href="mailto:ds957117122@gmail.com">ds957117122@gmail.com</a></li>
+      <li><i class="fa-brands fa-instagram"></i> Instagram: <a href="https://www.instagram.com/bindasaura?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank">@bindasaura</a></li>
+    </ul>
+    <p style="margin-top:10px; color:gray;">We usually respond within 24–48 hours.</p>
+  `;
+  infoPopup.classList.remove("hidden");
+});
+
+
+// Close popup
+closeInfoPopup.addEventListener("click", () => {
+  infoPopup.classList.add("hidden");
+});
+
+// Settings link (placeholder)
+settingsLink.addEventListener("click", () => {
+  alert("Settings page / modal will open here.");
+});

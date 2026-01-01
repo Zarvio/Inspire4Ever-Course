@@ -1,11 +1,16 @@
 
 
 <!-- Intro Overlay -->
+<!-- Intro Overlay -->
 <div id="introOverlay">
-    <img src="default.jpg" alt="Pinora Logo" id="introLogo">
+    <div class="introContent">
+        <img src="default.jpg" alt="Pinora Logo" id="introLogo">
+        <div class="versionText">Version 1.0</div>
+    </div>
 </div>
 
 <style>
+/* Fullscreen white overlay */
 /* Fullscreen white overlay */
 #introOverlay {
     position: fixed;
@@ -19,6 +24,22 @@
     align-items: center;
     z-index: 9999;
 }
+
+.introContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.versionText {
+    margin-top: 18px;
+    font-size: 28px;       /* big size */
+    font-weight: 600;
+    color: #444;
+    font-family: Arial, sans-serif;
+    letter-spacing: 1px;
+}
+
 
 /* Logo initial state chhota + animation */
 #introLogo {

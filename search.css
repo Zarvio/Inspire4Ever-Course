@@ -73,7 +73,7 @@ body {
 /* Bottom Navigation */
 .bottom-nav {
     position: fixed;
-    cursor: pointer;
+    
     bottom: 0;
     width: 100%;
     background: #07070700;

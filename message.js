@@ -49,21 +49,24 @@ firebase.auth().onAuthStateChanged(user => {
 
   currentUserId = user.uid;
 
-  // पहले chat list load करो
+  // Chat list load karo
   loadChatList().then(() => {
-    // अगर targetUid है → auto open
     if (targetUid) {
+      // ✅ Full user object fetch karo
       firebase.database().ref("users/" + targetUid).once("value").then(snap => {
         const userData = snap.val();
         if (!userData) {
           alert("User not found");
           return;
         }
-        openChat(targetUid, userData.username);
+        // ❌ Galat: openChat(targetUid, userData.username);
+        // ✅ Sahi:
+        openChat(targetUid, userData); 
       });
     }
   });
 });
+
 
 // ---------- Load chat list ----------
 // ---------- Load chat list with live updates ----------
@@ -192,17 +195,27 @@ function openChat(otherUid, userData) {
   selectedUserId = otherUid;
 
   // Username
-  chatUserName.innerText = userData.username || "Chat";
+  // Username + Verified Badge
+chatUserName.innerHTML = `
+  <span style="display:flex;align-items:center;gap:5px;">
+    @${userData.username || "Chat"}
+    ${userData.verified ? `
+      <img src="https://upload.wikimedia.org/wikipedia/commons/e/e4/Twitter_Verified_Badge.svg"
+           style="width:16px;height:16px;">
+    ` : ""}
+  </span>
+`;
+
 
   // Profile Image
   const chatUserImg = document.getElementById("chatUserImg");
   chatUserImg.src = userData.photoURL || "default.jpg";
 
-  // 🔗 Header click → user.html
+  // Header click → user.html
   const chatUserInfo = document.getElementById("chatUserInfo");
-chatUserInfo.onclick = () => {
-  window.location.href = `user.html?uid=${otherUid}`;
-};
+  chatUserInfo.onclick = () => {
+    window.location.href = `user.html?uid=${otherUid}`;
+  };
 
 
   // ---------- UI Switch ----------

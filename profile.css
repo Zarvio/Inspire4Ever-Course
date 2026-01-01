@@ -289,7 +289,7 @@ body {
     background: #07070700;
     backdrop-filter: blur(8px);
     padding: 10px 0;
-    cursor: pointer;
+    
     display: flex;
     justify-content: space-around;
 }
@@ -979,4 +979,100 @@ body {
 }
 .count-btn:hover{
   opacity:0.8;
+}
+/* Menu button */
+/* Header right menu button */
+.menu-btn {
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: #fff;              /* white icon */
+}
+
+
+/* Side menu */
+.side-menu {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 260px;
+  height: 100%;
+  background: #000;
+  color: #fff;
+  box-shadow: -8px 0 25px rgba(0,0,0,0.6);
+  transform: translateX(110%);
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1001;
+    transform: translateX(110%);
+}
+
+.side-menu.show {
+  transform: translateX(0);
+}
+
+
+
+.side-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.side-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.side-links li {
+  padding: 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+}
+
+
+
+.side-links li i {
+  
+  color: #fff;
+}
+
+
+.side-links li:hover {
+  background: #1a1a1a;         /* dark hover */
+}
+
+
+/* Overlay */
+.menu-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 1000;
+}
+
+.hidden {
+  display: none;
+}
+.side-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 1px solid #333;
+}
+
+.side-header h3,
+#closeMenu {
+  color: #fff;
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
 }

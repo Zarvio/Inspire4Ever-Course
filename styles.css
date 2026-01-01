@@ -256,7 +256,7 @@ body {
     position: fixed;
     bottom: 0;
     width: 100%;
-    cursor: pointer;
+    
     background: #070707bb;
     backdrop-filter: blur(8px);
     padding: 10px 0;
@@ -1308,4 +1308,60 @@ body {
 
 .hidden {
   display: none;
+}
+.credit-box {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(145deg, #1f1f1f, #2c2c2c);
+    padding: 6px 12px;
+    border-radius: 20px;
+    color: #ffd700;
+    font-weight: 600;
+    font-size: 14px;
+    box-shadow: 0 0 8px rgba(255,215,0,0.4);
+}
+
+.credit-box i {
+    color: #ffcc00;
+    font-size: 16px;
+}
+.reward-popup {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index: 9999;
+}
+
+.reward-popup.hidden {
+    display:none;
+}
+
+.reward-box {
+    background:#0b0b0b;
+    padding:40px;
+    border-radius:20px;
+    text-align:center;
+    color:#fff;
+    width:90%;
+    max-width:400px;
+    animation: popupZoom 0.4s ease;
+}
+
+.reward-box h2 {
+    color:#4caf50;
+    margin-bottom:15px;
+}
+
+.reward-box button {
+    margin-top:20px;
+    padding:12px 25px;
+    background:#4caf50;
+    border:none;
+    border-radius:10px;
+    font-size:1rem;
+    cursor:pointer;
 }

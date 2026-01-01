@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Coin Control Panel</title>
+  <link rel="stylesheet" href="coins.css">
+</head>
+<body>
+
+<div class="admin-coin-panel">
+  <h2>🪙 Coin Control Panel</h2>
+
+  <input type="text" id="searchUsername" placeholder="Enter username">
+  <button id="findUserBtn">Find User</button>
+
+  <p id="foundUserInfo"></p>
+  <h3 id="currentCoins"></h3>
+
+  <div class="coin-actions hidden" id="coinActions">
+    <input type="number" id="coinAmount" placeholder="Coins">
+    <button id="addCoinsBtn">Add Coins</button>
+    <button id="removeCoinsBtn">Remove Coins</button>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="script.js"></script>
+<script src="coins.js"></script>
+
+</body>
+</html>

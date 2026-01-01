@@ -75,8 +75,8 @@ body {
 /* Bottom Navigation */
 .bottom-nav {
     position: fixed;
+    
     bottom: 0;
-    cursor: pointer;
     width: 100%;
     background: #07070700;
     backdrop-filter: blur(8px);
@@ -116,4 +116,10 @@ body {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+.notif-title {
+  color: #888;
+  font-size: 13px;
+  margin: 15px 0 6px 10px;
+  text-transform: uppercase;
 }
